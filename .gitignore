@@ -30,6 +30,7 @@
 *.exe
 *.out
 *.app
+<<<<<<< HEAD
 *.run
 
 # Directories of tests
@@ -38,3 +39,5 @@ bin/
 
 # Files of buffer
 .l*
+=======
+>>>>>>> 236586f336b7ae218c3dcba05be98b495d93ad9e
