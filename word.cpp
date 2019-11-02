@@ -124,10 +124,13 @@ std::string Word::getCommand(std::string msg)
 
 std::string Word::getData(std::string msg)
 {
-    if(msg.size() > 12){
+    /*
+        Retira mensagem depois do cabecalho
+    */
+    if(msg.size() > TAM_CAB){
         int tamanho = 0;
         tamanho = getTamanho(msg);
-        return msg.substr(12, tamanho);
+        return msg.substr(TAM_CAB, tamanho);
     }
     else
         return " ";
@@ -167,6 +170,8 @@ char * Word::setTamanho(short tam)
     return aux;
 }
 
+
+
 void Word::print(char *vetor, int tam)
 {
     printf("Impressao do vetor: \n");
@@ -175,4 +180,15 @@ void Word::print(char *vetor, int tam)
         printf("%c\n", vetor[i]);
     }
     printf("Fim da impressao do vetor\n");
+}
+
+char * getDestinatario(const char * palavra )
+{
+    char * dest = new char[30];
+    //Destinatario
+    for(int i = 31; i<=60; i++)
+    {
+       dest[i] = palavra[i-31];
+    }
+    return dest;
 }
