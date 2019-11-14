@@ -1,2 +1,2 @@
-# webChat
-Projeto como trabalho final para a discipllina de Tópicos em Programação de Redes
+# Chat
+Projeto como trabalho final para a disciplina de Tópicos em Programação de Redes

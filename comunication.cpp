@@ -201,13 +201,6 @@ bool Comunication::sentFileBinArq(std::string caminho,
 	
 }
 
-std::string Comunication::getNameForward(std::string word)
-{
-	char * dest;
-	std::string destino;
-	destino.append(getDestinatario(word.c_str()));
-	return destino;
-}
 
 /*
 	No servidor as mensagens serão reencaminhadas, logo

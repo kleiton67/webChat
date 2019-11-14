@@ -11,7 +11,7 @@
 #ifndef COMUNICATION_H_
 #define COMUNICATION_H_
 
-#include  <string>
+#include <string>
 #include <sys/types.h>
 #include <unistd.h>
 #include <sys/socket.h>//Socket
@@ -36,12 +36,12 @@ namespace connection
 				std::string cmd, bool more, std::string msg);
 			//Recebe uma mesagem(Data)
             std::string receiveWord();
-			//Recebe uma mensagem em char
+			//Recebe uma mensagem em char(Server)
 			char * receiveWordChar();
             //Envia mensagem completa
             bool sentCompleteData(std::string rmt,
 				std::string dest,std::string cmd, std::string msg);
-            //Recebe a mensagem completa
+            //Recebe a mensagem completa(Dados)
             std::string receiveAllMsg();
             //Recebimento de arquivos Binarios
             bool receiveBinRecordFile(std::string caminho);
@@ -49,10 +49,11 @@ namespace connection
             bool sentFileBinArq(std::string caminho, 
 			std::string rmt, std::string dest, 
 			std::string cmd, bool more);
-			//Descoberta do nome para encaminhar pacote
-			std::string getNameForward(std::string  word);
 			//Faz o encaminho da mensagem (usar char)
 			std::string forward(char * palavra, int sock);
+
+			//Lembrar de POO e colocar as variaveis para remetente
+			//destinatario
 		public:
 
 			Comunication(int id){sock = id;};

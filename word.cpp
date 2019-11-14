@@ -9,93 +9,77 @@
 
 using namespace connection;
 
+char * Word::setTamanho()
+{
+    char *aux = new char[5];
+    sprintf(aux, "%.4d", tamanho);
+    return aux;
+}
+
+int getTam(char * tam)
+{
+    return((int)tam[0]-48)*1000+((int)tam[1]-48)*100+((int)tam[2]-48)*10+
+            ((int)tam[3]-48);
+}
+
+void Word::setRmt(char * rmt)
+{
+    remetente = new char[30];
+    memset(remetente, caractereDep, 30);
+    for(int i = 0; i < 30&&rmt[i]!='\0'; i++)
+    {
+        remetente[i] = rmt[i];
+    }
+}
+
+void Word::setDest(char * dest)
+{
+    destinatario = new char[30];
+    memset(destinatario, caractereDep, 30);
+    for(int i = 0; i < 30&&dest[i]!='\0'; i++)
+    {
+        destinatario[i] = dest[i];
+    }
+}
+
+void Word::setCmd(char * cmd)
+{
+    comando = new char[7];
+    memset(comando, caractereDep, 7);
+    for(int i = 0; i < 7&&cmd[i]!='\0'; i++)
+    {
+        comando[i] = cmd[i];
+    }
+}
+
+void Word::setCtrl(char * ctrl)
+{
+    controle = new char[2];
+    memset(destinatario, caractereDep, 2);
+    for(int i = 0; i < 2&&ctrl[i]!='\0'; i++)
+    {
+        destinatario[i] = ctrl[i];
+    }
+}
+
 Word::Word()
 {
-    version = "1";
+
 }
 
 Word::~Word()
-{}
-
-void  Word::setVersion(std::string version)
 {
-    this->version =  version;
-
-}
-
-/*
-    Parametros:
-    word:palavra a ser gerada
-    v: veersao da aplicacao
-    rmt: remtente
-    dest: destinatario
-    cmd:comando
-    control: indicica fim da mensagem
-    msg: mensagem a ser colocada no campo data
-    byytes: tamanho da mensagem
-*/
-void Word::makeWordchar(char* word, char v, const char* rmt, const char*dest,
- const char* cmd, const char* control, const char* msg, int bytes)
-{
-    //Tamanho apenas do dado
-    memset(word, caractereDep, bytes);
-    char * tam;
-    tam = setTamanho((short)bytes);
-    //Versao da aplicacao
-    word[0] = v;
-    //Remetente
-    for(int i = 1; i<=30; i++)
-    {
-       word[i] = rmt[i-1];
-    }
-    //Destinatario
-    for(int i = 31; i<=60; i++)
-    {
-       word[i] = dest[i-31];
-    }
-    //Comando
-    for(int i = 61; i<=67; i++)
-    {
-       word[i] = cmd[i-61];
-    }
-    //control
-    word[68] = control[0];
-    word[69] = control[1];
-    //Tamanho
-    word[70] = tam[0];
-    word[71] = tam[1];
-    word[72] = tam[2];
-    word[73] = tam[3];
-    //Mensagem
-    for(int i = TAM_CAB; i<bytes+TAM_CAB; i++)
-    {
-       word[i] = msg[i-TAM_CAB];
-    }
+    delete remetente;
+    delete destinatario;
+    delete comando;
+    delete controle;
+    delete dado;
 }
 
 
-bool Word::nextMessage(std::string msg)
+bool Word::nextMessage()
 {
-    //std::cout << "nextMessage\n";
-    if (msg.compare(10,2,"NM")==0)
-    {
-        //std::cout << "nextMessage: Há mensagem!!!\n";
-        return true;
-    }
-    if (msg.compare(10,2,"FM") == 0)
-    {
-        //std::cout << "nextMessage: Não Há mensagem!!!\n";        
-        return false;
-    }
-    else
-    {
-        return false;
-    }
-}
-
-bool Word::nextMessage(char * msg)
-{
-    if(msg[10]=='N' && msg[11] == 'M'){
+    if(controle[0]=='N' && controle[1] == 'M'){
         //std::cout << "NM: Ha mais mensagens!!!\n";
         return true;
     }
@@ -107,70 +91,150 @@ bool Word::nextMessage(char * msg)
     
 }
 
-std::string Word::getCommand(std::string msg)
+int Word::getTamanho()
 {
-    std::string aux("     ");
-    if(msg.size() < 5)
-    {
-        std::cout << "Mensagem vazia!!! - getCommand\n";
-    }
-    else
-    {
-        aux = msg.substr(1,5);
-    }
-    
-    return aux;
-}
-
-std::string Word::getData(std::string msg)
-{
-    /*
-        Retira mensagem depois do cabecalho
-    */
-    if(msg.size() > TAM_CAB){
-        int tamanho = 0;
-        tamanho = getTamanho(msg);
-        return msg.substr(TAM_CAB, tamanho);
-    }
-    else
-        return " ";
-}
-
-/*
-    data: dados da mensagem recebida
-    palavra: recebido pelo socket
-*/
-void Word::getData(char* data, char * palavra)
-{
-
-    int tamanho = getTamanho(palavra);
-    for(int i = 0;i<tamanho; i++)
-    {
-            data[i] = palavra[i+TAM_CAB];
-    }
-}
-
-int Word::getTamanho(std::string msg)
-{
-    return msg[70]*1000+msg[71]*100+msg[72]*10+msg[73];
-}
-
-int Word::getTamanho(char* msg)
-{
-    int tamanho;
-    tamanho = ((int)msg[70]-48)*1000+((int)msg[71]-48)*100+((int)msg[72]-48)*10+
-            ((int)msg[73]-48);
     return tamanho;
 }
 
-char * Word::setTamanho(short tam)
+char * Word::getCommand()
 {
-    char *aux = new char[5];
-    sprintf(aux, "%.4d", tam);
-    return aux;
+    return comando;
 }
 
+bool Word::setDado(const char* dado)
+{
+    this->dado = new char[1500];
+    memset(this->dado, caractereDep, 30);
+    for(int i = 0; i < 1500&&dado[i]!='\0'; i++)
+    {
+        this->dado[i] = dado[i];
+    }
+}
 
+const char * Word::getDado()
+{
+
+    return dado;
+}
+
+bool Word::setCabecalho(char version, char * rmt, char * dest,
+                char * cmd, char * ctrl)
+{
+    if((rmt!=NULL)&&(dest!=NULL)&&(cmd!=NULL)&&(ctrl!=NULL))
+    {    
+        this->versao = version;
+        setRmt(rmt);
+        setDest(dest);
+        setCmd(cmd);
+        setCtrl(ctrl);
+    }
+    else
+    {
+        return false;
+    }
+
+    return true;  
+}
+
+char * Word::getDestinatario()
+{
+    return destinatario;
+}
+/*
+    Parametros
+    word:palavra a ser gerada
+    v: versao da aplicacao
+    rmt: remetente
+    dest: destinatario
+    cmd:comando
+    control: indicica fim da mensagem
+    msg: mensagem a ser colocada no campo data
+    byytes: tamanho da mensagem
+*/
+char * Word::getWord()
+{
+    char * word = new char[TAM_DATA+TAM_CAB];
+    //Tamanho apenas do dado
+    memset(word, caractereDep, TAM_CAB+TAM_DATA);
+    char * tam;
+    tam = setTamanho();
+    //Versao da aplicacao
+    word[0] = versao;
+    //Remetente
+    for(int i = 1; i<=30; i++)
+    {
+       word[i] = remetente[i-1];
+    }
+    //Destinatario
+    for(int i = 31; i<=60; i++)
+    {
+       word[i] = destinatario[i-31];
+    }
+    //Comando
+    for(int i = 61; i<=67; i++)
+    {
+       word[i] = comando[i-61];
+    }
+    //control
+    word[68] = controle[0];
+    word[69] = controle[1];
+    //Tamanho
+    word[70] = tam[0];
+    word[71] = tam[1];
+    word[72] = tam[2];
+    word[73] = tam[3];
+    //Mensagem
+    for(int i = TAM_CAB; i<TAM_DATA+TAM_CAB; i++)
+    {
+       word[i] = dado[i-TAM_CAB];
+    }
+}
+
+void Word::setWord(char * palavra)
+{
+    //Tamanho apenas do dado
+    char * rmt = new char[30];
+    char * dest = new char[30];
+    char * cmd = new char[7];
+    char * ctrl = new char[2];
+    char * tam = new char[4];
+    //Versao da aplicacao
+    versao = palavra[0];
+    //Remetente
+    for(int i = 1; i<=30; i++)
+    {
+       rmt[i-1] = palavra[i];
+    }
+    //Destinatario
+    for(int i = 31; i<=60; i++)
+    {
+       dest[i-31] = palavra[i];
+    }
+    //Comando
+    for(int i = 61; i<=67; i++)
+    {
+       cmd[i-61] = palavra[i];
+    }
+    //control
+    ctrl[0] = palavra[68];
+    ctrl[1] = palavra[69];
+
+    //Tamanho: obter tamanho por char
+    tam[0] = palavra[0];
+    tam[1] = palavra[1];
+    tam[2] = palavra[2];
+    tam[3] = palavra[3];
+    //Mensagem
+    for(int i = TAM_CAB; i<TAM_DATA+TAM_CAB; i++)
+    {
+        dado[i-TAM_CAB] = palavra[i];
+    }
+    remetente = rmt;
+    destinatario = dest;
+    comando = cmd;
+    controle = ctrl;
+    tamanho = getTam(tam);
+}
 
 void Word::print(char *vetor, int tam)
 {
@@ -180,15 +244,4 @@ void Word::print(char *vetor, int tam)
         printf("%c\n", vetor[i]);
     }
     printf("Fim da impressao do vetor\n");
-}
-
-char * getDestinatario(const char * palavra )
-{
-    char * dest = new char[30];
-    //Destinatario
-    for(int i = 31; i<=60; i++)
-    {
-       dest[i] = palavra[i-31];
-    }
-    return dest;
 }

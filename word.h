@@ -24,38 +24,52 @@ namespace connection
         //Estrutura do protocolo
         /* Versao(1B)|Remetente(30B)|Destinatario(30B)|Command(7B)|Control(2B)|
          Tamanho(4B)|Data(1400)*/
-        protected:
-            std::string version;
-            std::string command;
-            void setVersion(std::string version);
-            //Faz palavra com char
-            void makeWordchar(char* word, char v, 
-                const char* rmt, const char*dest,const char* cmd, 
-                const char* control, const char* msg, int bytes);
-            //Verifica se há mensagens a serem a entregues
-            bool nextMessage(std::string msg);
-            //Verifica se ha mensagem
-            bool nextMessage(char * msg);
-            //Obtem tamanho da mensagem
-            int getTamanho(std::string msg);
+        private:
+            char versao;
+            char * remetente;
+            char * destinatario;
+            char * comando;
+            char * controle;
+            int tamanho;
+            char * dado;
+
             //Retorna ponteiro de char para tamanho
-            char * setTamanho(short tam);
-            //Retorna o tamanho da palavra
-            int getTamanho(char* msg);
-            //Imprime vetor
-            void print(char * vetor, int tam);
+            char * setTamanho();
+            //Retorna inteiro por string
+            int getTam(char *);
+            //Coloca remetente conforme padrao
+            void setRmt(char *);
+            //Coloca destinario conforme padrao
+            void setDest(char *);
+            //Coloca comando conforme padrao
+            void setCmd(char *);
+            //Coloca controle conforme padrao
+            void setCtrl(char *);
 
         public:
             Word();
             ~Word();
+            //Verifica se ha mensagem 
+            bool nextMessage();
+            //Obtem tamanho da mensagem
+            int getTamanho();
             //Obtem comando da palavra
-            std::string getCommand(std::string msg);
+            char * getCommand();
+            //Guarda mensagem a ser enviada
+            bool setDado(const char * );
             //Obtem somente mensagem
-            std::string getData(std::string msg);
-            //Obtem somente mensagem 
-            void getData(char* data, char * palavra);
+            const char *  getDado();
+            //Guarda informacoes do cabecalho
+            bool setCabecalho(char version, char * rmt, char * dest,
+                char * cmd, char * ctrl);
             //Obtem nome do destinatario
-            char * getDestinatario(const char * palavra);
+            char * getDestinatario();
+             //Faz palavra com char
+            char * getWord();
+            //Tem a palavra pronta, converte para o objeto
+            void setWord(char *);
+            //Imprime vetor
+            void print(char * vetor, int tam);
     };
 }
 
