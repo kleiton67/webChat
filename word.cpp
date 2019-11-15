@@ -144,6 +144,11 @@ char * Word::getDestinatario()
 {
     return destinatario;
 }
+
+char * Word::getRemetente()
+{
+    return remetente;
+}
 /*
     Parametros
     word:palavra a ser gerada
