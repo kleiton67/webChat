@@ -10,8 +10,6 @@
 
 
 #include <string>
-#include "../word.h"
-#include "../comunication.h"
 #include <string>
 #include <map>
 #include <vector>
@@ -19,7 +17,8 @@
 namespace connection{
 	class Controle{
 		private:
-			std::map<std::string, int> pessoas;
+			std::vector<string> pessoas;
+			std::map<std::string, int> pessoasOn;
 			std::map<std::string, std::vector<int> > grupos;
 			/*
 				First contem o usuario
@@ -31,12 +30,16 @@ namespace connection{
 		public:
 			Controle(){};
 			~Controle();
+			/*
+				Adiciona usuario ao servidor
+				int: socket do usuario
+				string: nome do usuario
+				string: senha do usuario
+			*/	
 			/*Verifica se usuário esta online
-				int : id da conexao
 				string : nome do usuario
-				string : senha do usuario
 			*/
-			bool userOnline(int, std::string, std::string);
+			bool userOnline(std::string);
 			//Verifica se o usuario esta na lista
 			bool verifyUser(std::string);
 			/*
@@ -53,6 +56,12 @@ namespace connection{
 				int : id do cliente dono do grupo
 			*/
 			bool newGroup(std::string, std::string, int);
+			/*
+				Adiciona pessoas no grupo
+				string: nome do adm
+				string: nome do usuario a ser adicionado
+			*/
+			bool addPGroup(std::string, std::string);
 			/*
 				Deleta grupo, se o usuario que solicita for adm
 				string: nome do grupo
