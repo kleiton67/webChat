@@ -32,6 +32,7 @@ namespace connection
 			//id do socket a se conectar
 			int sock = 0;
 			//Envia uma mensagem(Data)
+		public:
             bool sentData(std::string rmt, std::string dest, 
 				std::string cmd, bool more, std::string msg);
 			//Recebe uma palavra
@@ -49,10 +50,6 @@ namespace connection
 			std::string cmd, bool more);
 			//Faz o encaminho da mensagem (usar char)
 			std::string forward(Word, int sock);
-
-			//Lembrar de POO e colocar as variaveis para remetente
-			//destinatario
-		public:
 
 			Comunication(int id){sock = id;};
 			~Comunication();
