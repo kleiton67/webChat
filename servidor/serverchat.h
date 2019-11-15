@@ -1,12 +1,18 @@
 
-#include "../comunication.h"
+#ifndef SERVERCHAT_H_
+#define SERVERCHAT_H_
+
 #include "../server/controle.h"
-#include "../word.h"
+#include "../comunication/comunication.h"
+#include "../word/word.h"
 namespace connection{
     
     class ServerChat{
         private:
             Controle *control;
+            Comunication cmn;
+            Controle ctr;
+            int sock;
         public:
             bool setSocket(int Socket);
             bool login(Word word);
@@ -28,3 +34,4 @@ namespace connection{
 
     };
 }
+#endif
