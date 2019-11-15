@@ -40,23 +40,20 @@ bool Comunication::sentData(std::string rmt, std::string dest,
     {
         return false;
     }
-	palavra.setDado(msg.c_str());
+	palavra.setDado(msg.c_str(), msg.size());
     write(sock, palavra.getWord, TAM_DATA+TAM_CAB);
 
     return true;
 }
 
 
-std::string Comunication::receiveWord()
+Word Comunication::receiveWord()
 {
-    /*
-        Receber apenas dados
-    */	
    char data[TAM_DATA+TAM_CAB];
-   std::string msg;
+   Word palavra;
    read(sock, data, TAM_DATA+TAM_CAB);
-   msg.append(data);
-   return msg;
+   palavra.setWord(data);
+   return palavra;
 }
 
 bool Comunication::sentCompleteData(std::string rmt, std::string dest,
