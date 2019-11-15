@@ -36,15 +36,15 @@ namespace connection
             //Retorna ponteiro de char para tamanho
             char * setTamanho();
             //Retorna inteiro por string
-            int getTam(char *);
+            int getTam(const char *);
             //Coloca remetente conforme padrao
-            void setRmt(char *);
+            void setRmt(const char *);
             //Coloca destinario conforme padrao
-            void setDest(char *);
+            void setDest(const char *);
             //Coloca comando conforme padrao
-            void setCmd(char *);
+            void setCmd(const char *);
             //Coloca controle conforme padrao
-            void setCtrl(char *);
+            void setCtrl(const char *);
 
         public:
             Word();
@@ -56,12 +56,12 @@ namespace connection
             //Obtem comando da palavra
             char * getCommand();
             //Guarda mensagem a ser enviada
-            bool setDado(const char * );
+            bool setDado(const char * , int);
             //Obtem somente mensagem
             const char *  getDado();
             //Guarda informacoes do cabecalho
-            bool setCabecalho(char version, char * rmt, char * dest,
-                char * cmd, char * ctrl);
+            bool setCabecalho(char version,const char * rmt,const char * dest,
+                const char * cmd, const char * ctrl);
             //Obtem nome do destinatario
             char * getDestinatario();
              //Faz palavra com char

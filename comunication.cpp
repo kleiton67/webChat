@@ -13,8 +13,7 @@ using namespace connection;
 bool Comunication::sentData(std::string rmt, std::string dest, 
 		std::string cmd, bool more, std::string msg)
 {
-    char data[TAM_DATA+TAM_CAB];
-	memset(data, caractereDep, TAM_CAB+TAM_DATA);
+	Word palavra;
 
 	//Coloca tamanho no certo na string 
 	// para remetente e destinatario
@@ -26,20 +25,23 @@ bool Comunication::sentData(std::string rmt, std::string dest,
     if(msg.size() <= TAM_DATA){
         if(more)
         {
-            makeWordchar(data, '1', rmt.c_str(), dest.c_str(), 
-				cmd.c_str(), "NM", msg.c_str(), msg.size());
+			//Enviar mensagem
+			palavra.setCabecalho('1', rmt.c_str(), dest.c_str(), cmd.c_str,
+			"NM");
+
         }
         else
         {
-            makeWordchar(data, '1', rmt.c_str(), dest.c_str(), 
-				cmd.c_str(), "FM", msg.c_str(), msg.size());
+			palavra.setCabecalho('1', rmt.c_str(), dest.c_str(), cmd.c_str,
+			"FM");
         }
     }
     else
     {
         return false;
     }
-    write(sock, data, TAM_DATA+TAM_CAB);
+	palavra.setDado(msg.c_str());
+    write(sock, palavra.getWord, TAM_DATA+TAM_CAB);
 
     return true;
 }
@@ -56,18 +58,6 @@ std::string Comunication::receiveWord()
    msg.append(data);
    return msg;
 }
-
-char * Comunication::receiveWordChar()
-{
-    /*
-        Receber apenas dados
-    */	
-   char data[TAM_DATA+TAM_CAB];
-   std::string msg;
-   read(sock, data, TAM_DATA+TAM_CAB);
-   return data;
-}
-
 
 bool Comunication::sentCompleteData(std::string rmt, std::string dest,
 	std::string cmd, std::string msg)

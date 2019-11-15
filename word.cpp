@@ -16,13 +16,13 @@ char * Word::setTamanho()
     return aux;
 }
 
-int getTam(char * tam)
+int getTam(const char * tam)
 {
     return((int)tam[0]-48)*1000+((int)tam[1]-48)*100+((int)tam[2]-48)*10+
             ((int)tam[3]-48);
 }
 
-void Word::setRmt(char * rmt)
+void Word::setRmt(const char * rmt)
 {
     remetente = new char[30];
     memset(remetente, caractereDep, 30);
@@ -32,7 +32,7 @@ void Word::setRmt(char * rmt)
     }
 }
 
-void Word::setDest(char * dest)
+void Word::setDest(const char * dest)
 {
     destinatario = new char[30];
     memset(destinatario, caractereDep, 30);
@@ -42,7 +42,7 @@ void Word::setDest(char * dest)
     }
 }
 
-void Word::setCmd(char * cmd)
+void Word::setCmd(const char * cmd)
 {
     comando = new char[7];
     memset(comando, caractereDep, 7);
@@ -52,7 +52,7 @@ void Word::setCmd(char * cmd)
     }
 }
 
-void Word::setCtrl(char * ctrl)
+void Word::setCtrl(const char * ctrl)
 {
     controle = new char[2];
     memset(destinatario, caractereDep, 2);
@@ -101,14 +101,18 @@ char * Word::getCommand()
     return comando;
 }
 
-bool Word::setDado(const char* dado)
+bool Word::setDado(const char* dado, int tam)
 {
-    this->dado = new char[1500];
+
+    this->dado = new char[TAM_DATA];
     memset(this->dado, caractereDep, 30);
-    for(int i = 0; i < 1500&&dado[i]!='\0'; i++)
+    for(int i = 0; i < TAM_DATA&&dado[i]!='\0'; i++)
     {
         this->dado[i] = dado[i];
     }
+    tamanho = tam;
+
+    return true;
 }
 
 const char * Word::getDado()
@@ -117,8 +121,8 @@ const char * Word::getDado()
     return dado;
 }
 
-bool Word::setCabecalho(char version, char * rmt, char * dest,
-                char * cmd, char * ctrl)
+bool Word::setCabecalho(char version, const char * rmt, const char * dest,
+                const char * cmd, const char * ctrl)
 {
     if((rmt!=NULL)&&(dest!=NULL)&&(cmd!=NULL)&&(ctrl!=NULL))
     {    
@@ -220,10 +224,10 @@ void Word::setWord(char * palavra)
     ctrl[1] = palavra[69];
 
     //Tamanho: obter tamanho por char
-    tam[0] = palavra[0];
-    tam[1] = palavra[1];
-    tam[2] = palavra[2];
-    tam[3] = palavra[3];
+    tam[0] = palavra[70];
+    tam[1] = palavra[71];
+    tam[2] = palavra[72];
+    tam[3] = palavra[73];
     //Mensagem
     for(int i = TAM_CAB; i<TAM_DATA+TAM_CAB; i++)
     {

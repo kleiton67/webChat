@@ -26,7 +26,7 @@
 namespace connection
 {
 
-	class Comunication : public Word
+	class Comunication
 	{
 		protected:
 			//id do socket a se conectar
@@ -34,10 +34,8 @@ namespace connection
 			//Envia uma mensagem(Data)
             bool sentData(std::string rmt, std::string dest, 
 				std::string cmd, bool more, std::string msg);
-			//Recebe uma mesagem(Data)
-            std::string receiveWord();
-			//Recebe uma mensagem em char(Server)
-			char * receiveWordChar();
+			//Recebe uma palavra
+            Word receiveWord();
             //Envia mensagem completa
             bool sentCompleteData(std::string rmt,
 				std::string dest,std::string cmd, std::string msg);
