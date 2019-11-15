@@ -10,7 +10,7 @@
 
 using namespace connection;
 
-bool Controle::userOnline(int sock, std::string user, std::string pass)
+bool Controle::userAdd(int sock, std::string user, std::string pass)
 {
     std::map< std::string, int >::iterator it = pessoasOn.find(user);
     //pessoa com esse nome ja foi encontrada
@@ -23,3 +23,15 @@ bool Controle::userOnline(int sock, std::string user, std::string pass)
     return true;
 }
 
+int Controle::userOnline(std::string user)
+{
+    std::map< std::string, int >::iterator it = pessoasOn.find(user);
+    //pessoa com esse nome ja foi encontrada
+    if(it != pessoasOn.end())
+        return -1;
+    else
+    {
+        return it->second;
+    }
+    
+}

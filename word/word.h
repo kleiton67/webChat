@@ -64,6 +64,8 @@ namespace connection
                 const char * cmd, const char * ctrl);
             //Obtem nome do destinatario
             char * getDestinatario();
+            //Obtem o remetente
+            char * getRemetente();
              //Faz palavra com char
             char * getWord();
             //Tem a palavra pronta, converte para o objeto

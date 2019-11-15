@@ -17,7 +17,7 @@
 namespace connection{
 	class Controle{
 		private:
-			std::vector<string> pessoas;
+			std::vector<std::string> pessoas;
 			std::map<std::string, int> pessoasOn;
 			std::map<std::string, std::vector<int> > grupos;
 			/*
@@ -36,10 +36,12 @@ namespace connection{
 				string: nome do usuario
 				string: senha do usuario
 			*/	
-			/*Verifica se usuário esta online
+			bool userAdd(int, std::string, std::string);
+			/*Verifica se usuário esta online e retorna socket dele
 				string : nome do usuario
+				retorno > 0 se o usuario esta na lista
 			*/
-			bool userOnline(std::string);
+			int userOnline(std::string);
 			//Verifica se o usuario esta na lista
 			bool verifyUser(std::string);
 			/*
@@ -67,7 +69,6 @@ namespace connection{
 				string: nome do grupo
 				string: nome do admin 
 			*/
-			bool delGroup(std::string, std::string);
 
 	};
 }
