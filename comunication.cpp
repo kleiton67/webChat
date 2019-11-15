@@ -88,17 +88,20 @@ bool Comunication::sentCompleteData(std::string rmt, std::string dest,
 
 std::string Comunication::receiveAllMsg()
 {
-	std::string msg;
 	std::string r_msg;
+	Word palavra;
 
-	msg = receiveWord();
-	while(nextMessage(msg))
+	palavra = receiveWord();
+
+
+
+	while(palavra.nextMessage())
 	{
-		msg.clear();
-		msg = receiveWord();
-		r_msg.append(getData(msg));
+
+		palavra = receiveWord();
+		r_msg.append(palavra.getDado());
 	}
-	r_msg.append(getData(msg));
+	r_msg.append(palavra.getDado());
 
 	return r_msg;
 }
@@ -109,25 +112,21 @@ bool Comunication::receiveBinRecordFile(std::string caminho)
 	std::fstream file(caminho, std::ios::binary|std::ios::out);
 	if(file)
 	{
-		char * palavra = new char[TAM_DATA+TAM_CAB];
-		char * data = new char[TAM_DATA];
-		memset(palavra, caractereDep, TAM_DATA+TAM_CAB);
-		//std::cout << "RcvBin: Entrada na funcao\n";
-		//read(sock, palavra, TAM_DATA+TAM_CAB);
-		recv(sock, palavra, TAM_CAB+TAM_DATA, 0);
-		//std::cout << "RcvBin: Recebido Primeiro mensagem\n";
-		while(nextMessage(palavra))
+		
+		Word palavra;
+		char * pal_sock = new char [TAM_CAB+TAM_DATA];
+		memset(pal_sock, caractereDep, TAM_DATA+TAM_CAB);
+		recv(sock, pal_sock, TAM_CAB+TAM_DATA, 0);
+		palavra.setWord(pal_sock);
+		while(palavra.nextMessage())
 		{
-			getData(palavra, data);
-			file.write(data, TAM_DATA);
-			//read(sock, palavra, TAM_DATA+TAM_CAB);
-			recv(sock, palavra, TAM_CAB+TAM_DATA, 0);
+			file.write(palavra.getDado, TAM_DATA);
+			memset(pal_sock, caractereDep, TAM_DATA+TAM_CAB);
+			recv(sock, pal_sock, TAM_CAB+TAM_DATA, 0);
 		}
-		getData(palavra, data);
 		int t_msg;
-		t_msg = getTamanho(palavra);
 		//std::cout << "RcvBin: Tamanho da mensagem: " << t_msg << "\n";
-		file.write(data, t_msg);
+		file.write(palavra.getDado, palavra.getTamanho());
 		//std::cout << "RcvBin: Recebido ultimo mensagem " 
 		//<< "\n";
 		file.close();
@@ -150,30 +149,22 @@ bool Comunication::sentFileBinArq(std::string caminho,
 	if(file){
 		char buffer[TAM_DATA];
 		char  temp[1];
-		char *palavra = new char[TAM_DATA+TAM_CAB];
-		//std::cout << "sentFileBinArq: Enviando file\n";
+		char *pal_sock = new char[TAM_DATA+TAM_CAB];
+		Word palavra;
 		while(file.tellg()!=EOF)
 		{
-			//std::cout << "sentFileBinArq: Enviando file1\n";
 			file.read(temp, sizeof(char));
-			//std::cout << temp;
 			buffer[sent] = temp[0]; 
 			sent++;
 			if(sent ==TAM_DATA)
 			{
-				//std::cout << "sentFileBinArq: Enviando file2\n";
-				//Envia no tamnho de TAM_DATA
-				makeWordchar(palavra, cmd.c_str(), (char*)"NM", buffer, TAM_DATA);
-				write(sock, palavra, TAM_DATA+TAM_CAB);
-				//send(sock, palavra, TAM_DATA+TAM_CAB, 0);
+				palavra.setWord(buffer);
+				write(sock, palavra.getWord(), TAM_DATA+TAM_CAB);
 				sent = 0;
 			}
 		}
-		//std::cout << "sentFileBinArq: Enviando file3\n";
-		//Envia o resto
-		makeWordchar(palavra, cmd.c_str(), (char*)"FM", buffer, sent);
 		//print(palavra, 30);
-		write(sock, palavra, TAM_DATA+TAM_CAB);
+		write(sock, palavra.getWord(), TAM_DATA+TAM_CAB);
 		//send(sock, palavra, TAM_DATA+TAM_CAB, 0);
 		//std::cout << "SentFileBin: Enviado com sucesso: " << 
 		//caminho << "\n";
@@ -195,7 +186,7 @@ bool Comunication::sentFileBinArq(std::string caminho,
 	palavra: palavra que será restransmitida
 	sock: identificação do socket a ser reencaminhado a mensagem
 */
-std::string Comunication::forward(char * palavra, int sock)
+std::string Comunication::forward(Word palavra, int sock)
 {
-	write(sock, palavra, TAM_DATA+TAM_CAB);
+	write(sock, palavra.getWord(), TAM_DATA+TAM_CAB);
 }

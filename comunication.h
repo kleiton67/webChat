@@ -48,7 +48,7 @@ namespace connection
 			std::string rmt, std::string dest, 
 			std::string cmd, bool more);
 			//Faz o encaminho da mensagem (usar char)
-			std::string forward(char * palavra, int sock);
+			std::string forward(Word, int sock);
 
 			//Lembrar de POO e colocar as variaveis para remetente
 			//destinatario
