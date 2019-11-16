@@ -13,6 +13,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <algorithm>
 
 namespace connection{
 	class Controle{
@@ -55,21 +56,25 @@ namespace connection{
 				Cria grupo
 				string : nome do grupo
 				string : nome do admin
-				int : id do cliente dono do grupo
+				string : senha do admm
 			*/
-			bool newGroup(std::string, std::string, int);
+			bool newGroup(std::string, std::string, std::string);
 			/*
 				Adiciona pessoas no grupo
+				string: nome do grupo
 				string: nome do adm
+				string: senha adm
 				string: nome do usuario a ser adicionado
 			*/
-			bool addPGroup(std::string, std::string);
+			bool addPGroup(std::string, std::string,  std::string, 
+				std::string);
 			/*
 				Deleta grupo, se o usuario que solicita for adm
 				string: nome do grupo
 				string: nome do admin 
+				string: senha admin
 			*/
-
+			bool delGroup(std::string, std::string, std::string);
 	};
 }
 
