@@ -37,7 +37,7 @@ namespace connection{
 				string: nome do usuario
 				string: senha do usuario
 			*/	
-			bool userAdd(int, std::string, std::string);
+			bool userAdd(std::string, std::string);
 			/*Verifica se usuário esta online e retorna socket dele
 				string : nome do usuario
 				retorno > 0 se o usuario esta na lista
@@ -53,13 +53,14 @@ namespace connection{
 				Login do usuario
 				string: nome usuario
 				string: senha usuario
+				int: id da conexao
 			*/
-			bool userLogin(std::string, std::string);
+			bool userLogin(std::string, std::string, int);
 			/*
 				Fazer logof do usuario
 				string: nome do usuario
 			*/
-			bool logofUser(std::string);
+			bool userLogof(std::string);
 			//Verifica se o usuario esta na lista
 			bool verifyUser(std::string);
 			/*
