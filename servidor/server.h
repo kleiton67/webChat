@@ -42,7 +42,7 @@ namespace connection
             //retorna posicao do vetor com thread desativada ou inexistente
             std::map<int, _Params*>::iterator threadDisabled(_Params* );
             //Controle de usuario
-            Controle controle;
+            Controle * controle;
 
         public:
             ServerT(std::string address, short int port);

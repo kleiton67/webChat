@@ -43,6 +43,23 @@ namespace connection{
 				retorno > 0 se o usuario esta na lista
 			*/
 			int userOnline(std::string);
+			/*
+				Deleta usuario das estruturas
+				string: Nome do usuario a ser excluido
+				string: senha do usuario
+			*/
+			bool delUser(std::string, std::string);
+			/*
+				Login do usuario
+				string: nome usuario
+				string: senha usuario
+			*/
+			bool userLogin(std::string, std::string);
+			/*
+				Fazer logof do usuario
+				string: nome do usuario
+			*/
+			bool logofUser(std::string);
 			//Verifica se o usuario esta na lista
 			bool verifyUser(std::string);
 			/*

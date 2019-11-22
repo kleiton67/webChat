@@ -12,15 +12,20 @@ using namespace connection;
 
 bool Controle::userAdd(int sock, std::string user, std::string pass)
 {
-    std::map< std::string, int >::iterator it = pessoasOn.find(user);
-    //pessoa com esse nome ja foi encontrada
-    if(it != pessoasOn.end())
-        return false;
-    pessoasOn.insert(std::pair<std::string, int>( user, sock));
+    std::vector< std::string >::iterator it = find(pessoas.begin(),
+    pessoas.end(), user);
+    {
+        std::map< std::string, int >::iterator itOn = pessoasOn.find(user);
+        //pessoa com esse nome ja foi encontrada
+        if(itOn != pessoasOn.end())
+            return false;
+        
+        pessoasOn.insert(std::pair<std::string, int>( user, sock));
 
-    password.insert(std::pair<std::string, std::string>(user, pass));
+        password.insert(std::pair<std::string, std::string>(user, pass));
 
     return true;
+    }
 }
 
 int Controle::userOnline(std::string user)
@@ -33,6 +38,11 @@ int Controle::userOnline(std::string user)
     {
         return it->second;
     }   
+}
+
+bool Controle::delUser(std::string user, std::string pass)
+{
+    
 }
 
 bool Controle::verifyUser(std::string user)

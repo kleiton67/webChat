@@ -15,6 +15,7 @@ ServerT::ServerT(std::string address, short int port)
     ad_Server.sin_family = AF_INET;
     this->port = port;
     ad_Server.sin_port = htons(port);
+    controle = new Controle;
 }
 
 ServerT::~ServerT()
@@ -53,6 +54,7 @@ bool ServerT::acceptClient(void *function(void *param))
     parametros = new _Params;
     cSocket = accept(sListen, (struct sockaddr*)NULL, NULL);
     parametros->socketClient = cSocket;
+    parametros->controle = controle;
     function(parametros);
     //std:: cout << parametros->msg;
     return true;
