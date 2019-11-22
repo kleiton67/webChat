@@ -26,6 +26,7 @@ namespace connection{
 				Second a senha
  			*/
 			std::map< std::string, std::string > password;
+
 		protected:
 			//Descoberta do nome para encaminhar pacote
 		public:
@@ -93,6 +94,15 @@ namespace connection{
 				string: senha admin
 			*/
 			bool delGroup(std::string, std::string, std::string);
+			/*
+				Retorna lista de ids dos usuarios conectados
+				string: nome do grupo
+			*/
+			std::vector<int> usersGroup(std::string);
+			/*
+				Retorna lista de usuarios online
+			*/
+			std::vector<std::string> listUserOn();
 	};
 }
 

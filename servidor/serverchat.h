@@ -2,7 +2,7 @@
 #ifndef SERVERCHAT_H_
 #define SERVERCHAT_H_
 
-#include "../server/controle.h"
+#include "controle.h"
 #include "../comunication/comunication.h"
 #include "../word/word.h"
 namespace connection{

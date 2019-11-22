@@ -83,7 +83,7 @@ bool ServerT::multiClient(void *function(void*))
     cSocket = accept(sListen, (struct sockaddr*)NULL, NULL);
     parametros->active = true;
     parametros->socketClient = cSocket;
-    parametros->controle = &controle;
+    parametros->controle = controle;
 
     int status = pthread_create(&idThread, NULL, 
         function, (void* )parametros);  

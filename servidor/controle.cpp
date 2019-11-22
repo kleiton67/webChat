@@ -143,3 +143,23 @@ bool Controle::delGroup(std::string grupo, std::string adm, std::string pass)
     
     return true;
 }
+
+std::vector<int> Controle::usersGroup(std::string grp)
+{
+    std::map<std::string, std::vector<int> >::iterator itg = grupos.find(grp);
+    std::vector<int> t;
+    if(itg== grupos.end())
+        return t; 
+    return itg->second;
+}
+
+std::vector<std::string> Controle::listUserOn()
+{
+    std::vector<std::string> peoples;
+    std::map< std::string, int >::iterator it = pessoasOn.begin();
+    for(;it!=pessoasOn.end();it++)
+    {
+        peoples.push_back(it->first);
+    }
+    return peoples;
+}
