@@ -1,7 +1,7 @@
 
 
 #include "serverchat.h"
-#include "../comunication/comunication.h"
+
 
 bool IsUnexpectedCharacters(char c)
 {
@@ -10,7 +10,7 @@ bool IsUnexpectedCharacters(char c)
     case '(':
     case ')':
     case '-':
-    case '\0';
+    case '\0':
     case caractereDep: 
         return true;
     default:
@@ -19,8 +19,7 @@ bool IsUnexpectedCharacters(char c)
 }
 using namespace connection;
 
-    Comunication cmn;
-    Controle ctr;
+  
     ServerChat::ServerChat(Controle *control){
         this->control = control;
     }
@@ -33,11 +32,12 @@ using namespace connection;
         
     }
     bool ServerChat::login(Word word){
-    
+        
 
-        if(ctr.userOnline(id,senha,log) >1){
-            cmn.receiveWord()
+        if(ctr.userOnline(word.getRemetente()) >1){
+            ctr.userAdd(sock,word.getRemetente(),word.getDado);
         }
+        
 
     }
     bool ServerChat::logout(Word word){
