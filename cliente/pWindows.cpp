@@ -1,13 +1,29 @@
-#include <gtkmm.h>
+#include "pWindows.h"
+#include <iostream>
 
-int main(int argc, char *argv[])
+HelloWorld::HelloWorld()
+: m_button("Hello World")   // creates a new button with label "Hello World".
 {
-  auto app =
-    Gtk::Application::create(argc, argv,
-      "org.gtkmm.examples.base");
+  // Sets the border width of the window.
+  set_border_width(10);
 
-  Gtk::Window window;
-  window.set_default_size(200, 200);
+  // When the button receives the "clicked" signal, it will call the
+  // on_button_clicked() method defined below.
+  m_button.signal_clicked().connect(sigc::mem_fun(*this,
+              &HelloWorld::on_button_clicked));
 
-  return app->run(window);
-}	
+  // This packs the button into the Window (a container).
+  add(m_button);
+
+  // The final step is to display this newly created widget...
+  m_button.show();
+}
+
+HelloWorld::~HelloWorld()
+{
+}
+
+void HelloWorld::on_button_clicked()
+{
+  std::cout << "Hello World" << std::endl;
+}
