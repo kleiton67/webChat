@@ -52,6 +52,7 @@
 		"mutex": "cpp",
 		"ratio": "cpp",
 		"thread": "cpp",
-		"valarray": "cpp"
+		"valarray": "cpp",
+		"hash_map": "cpp"
 	}
 }
