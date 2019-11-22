@@ -2,7 +2,7 @@
 #ifndef SERVERCHAT_H_
 #define SERVERCHAT_H_
 
-#include "../server/controle.h"
+#include "controle.h"
 #include "../comunication/comunication.h"
 #include "../word/word.h"
 namespace connection{
@@ -13,7 +13,12 @@ namespace connection{
             Comunication cmn;
             Controle ctr;
             int sock;
+            
         public:
+            
+            ServerChat(Controle *Control);
+            ServerChat(Controle *Control, int socket);
+
             bool setSocket(int Socket);
             bool login(Word word);
             bool logout(Word word);
@@ -27,9 +32,8 @@ namespace connection{
             bool search(Word word);   
             void comando();
 
-            ServerChat(Controle *Control);
-            ServerChat(Controle *Control, int socket);
-                 
+         
+            friend bool IsUnexpectedCharacters(char c);             
 
 
     };
