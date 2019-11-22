@@ -20,7 +20,7 @@
 #include <fstream> //Manipulação de arquivos
 #include <cstdlib> //system
 #include <fcntl.h> // open
-#include "word.h"
+#include "../word/word.h"
 
 
 namespace connection

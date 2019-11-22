@@ -12,7 +12,9 @@
 
 #include <pthread.h>
 #include <string>
-#include <controle.h>
+#include "controle.h"
+
+using namespace connection;
 
 typedef struct _Params{
     //socket criado para o cliente
