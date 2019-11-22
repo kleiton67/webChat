@@ -24,6 +24,7 @@ namespace connection
         //Estrutura do protocolo
         /* Versao(1B)|Remetente(30B)|Destinatario(30B)|Command(7B)|Control(2B)|
          Tamanho(4B)|Data(1400)*/
+
         private:
             char versao;
             char * remetente;
@@ -45,6 +46,7 @@ namespace connection
             void setCmd(const char *);
             //Coloca controle conforme padrao
             void setCtrl(const char *);
+              
 
         public:
             Word();
@@ -72,7 +74,10 @@ namespace connection
             void setWord(char *);
             //Imprime vetor
             void print(char * vetor, int tam);
+        
+            
     };
+
 }
 
 #endif

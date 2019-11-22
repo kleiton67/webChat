@@ -50,7 +50,7 @@ namespace connection
 			std::string cmd, bool more);
 			//Faz o encaminho da mensagem (usar char)
 			std::string forward(Word, int sock);
-
+			Comunication(){};
 			Comunication(int id){sock = id;};
 			~Comunication();
 
