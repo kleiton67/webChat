@@ -66,11 +66,29 @@ using namespace connection;
         ctr.delGroup(word.getRemetente(),word.getDestinatario(),word.getDado());
     }
     bool ServerChat::userSend(Word word){
+        std::string str;
+        str.append(word.getRemetente());
 
+        std::transform(str.begin(), str.end(), str.begin(), ::toupper);
+        str.erase(std::remove_if(str.begin(), str.end(),
+             &IsUnexpectedCharacters), str.end());
+             
         cmn.forward(word,ctr.userOnline(word.getRemetente()));
         
     }
     bool ServerChat::grupoSend(Word word){
+        std::vector<int> listaUsers;    
 
+        listaUsers = ctr.usersGroup(word.getDestinatario());
+        std::vector<int>::iterator itr;
+        for(itr = listaUsers.begin();itr != listaUsers.end();itr++){
+           cmn.forward(word,*itr);  
+        }  
         
+    }
+
+    bool ServerChat::search(Word word){
+        ctr.listUserOn();
+
+
     }
