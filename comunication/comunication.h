@@ -52,7 +52,7 @@ namespace connection
 			std::string forward(Word, int sock);
 			Comunication(){};
 			Comunication(int id){sock = id;};
-			~Comunication();
+			~Comunication(){};
 
 	};
 }

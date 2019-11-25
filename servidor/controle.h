@@ -31,7 +31,7 @@ namespace connection{
 			//Descoberta do nome para encaminhar pacote
 		public:
 			Controle(){};
-			~Controle();
+			~Controle(){};
 			/*
 				Adiciona usuario ao servidor
 				int: socket do usuario

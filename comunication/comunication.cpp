@@ -14,6 +14,7 @@ bool Comunication::sentData(std::string rmt, std::string dest,
 		std::string cmd, bool more, std::string msg)
 {
 	Word palavra;
+	std::string comando;
 
 	//Coloca tamanho no certo na string 
 	// para remetente e destinatario
@@ -25,15 +26,16 @@ bool Comunication::sentData(std::string rmt, std::string dest,
     if(msg.size() <= TAM_DATA){
         if(more)
         {
+			comando = "NM";
 			//Enviar mensagem
-			palavra.setCabecalho('1', rmt.c_str(), dest.c_str(), cmd.c_str,
-			"NM");
+			palavra.setCabecalho('1', rmt.c_str(), dest.c_str(), cmd.c_str(),
+			comando.c_str());
 
         }
         else
         {
-			palavra.setCabecalho('1', rmt.c_str(), dest.c_str(), cmd.c_str,
-			"FM");
+			palavra.setCabecalho('1', rmt.c_str(), dest.c_str(), cmd.c_str(),
+			comando.c_str());
         }
     }
     else
@@ -41,7 +43,7 @@ bool Comunication::sentData(std::string rmt, std::string dest,
         return false;
     }
 	palavra.setDado(msg.c_str(), msg.size());
-    write(sock, palavra.getWord, TAM_DATA+TAM_CAB);
+    write(sock, palavra.getWord(), TAM_DATA+TAM_CAB);
 
     return true;
 }
@@ -100,9 +102,9 @@ std::string Comunication::receiveAllMsg()
 
 		palavra = receiveWord();
 		r_msg.append(palavra.getDado());
-	}
 	r_msg.append(palavra.getDado());
 
+	}
 	return r_msg;
 }
 
@@ -120,13 +122,13 @@ bool Comunication::receiveBinRecordFile(std::string caminho)
 		palavra.setWord(pal_sock);
 		while(palavra.nextMessage())
 		{
-			file.write(palavra.getDado, TAM_DATA);
+			file.write(palavra.getDado(), TAM_DATA);
 			memset(pal_sock, caractereDep, TAM_DATA+TAM_CAB);
 			recv(sock, pal_sock, TAM_CAB+TAM_DATA, 0);
 		}
 		int t_msg;
 		//std::cout << "RcvBin: Tamanho da mensagem: " << t_msg << "\n";
-		file.write(palavra.getDado, palavra.getTamanho());
+		file.write(palavra.getDado(), palavra.getTamanho());
 		//std::cout << "RcvBin: Recebido ultimo mensagem " 
 		//<< "\n";
 		file.close();

@@ -11,7 +11,7 @@
 #include <fstream>
 #include "server.h"
 #include <time.h> //manipulação de data
-#include <serverchat.h> //cuida dos clientes conectados
+#include "serverchat.h" //cuida dos clientes conectados
 
 #define PORTCMT  30100
 

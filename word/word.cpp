@@ -16,7 +16,7 @@ char * Word::setTamanho()
     return aux;
 }
 
-int getTam(const char * tam)
+int Word::getTam(const char * tam)
 {
     return((int)tam[0]-48)*1000+((int)tam[1]-48)*100+((int)tam[2]-48)*10+
             ((int)tam[3]-48);

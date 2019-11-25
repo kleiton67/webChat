@@ -19,76 +19,141 @@ bool IsUnexpectedCharacters(char c)
 }
 using namespace connection;
 
-  
-    ServerChat::ServerChat(Controle *control){
-        this->control = control;
-    }
-    ServerChat::ServerChat(Controle *control, int socket){
-        this->control = control;
-        
-    }
-
-    bool ServerChat::setSocket(int socket){
-        
-    }
-    bool ServerChat::login(Word word){
-        
-
-    }
-
-    
-    bool ServerChat::logout(Word word){
-        if(ctr.userOnline(word.getRemetente) != -1){
-            
-        }
-        //if(userOnline(id,senha,login) == true){}
-
-    }
-    bool ServerChat::erro(Word word){
-
-    }
-
-    bool ServerChat::inserirUSer(Word word){
-        if(ctr.userOnline(word.getRemetente()) ==-1){
-            ctr.userAdd(word.getRemetente(),word.getDado());
-        }
-    }
-    
-    bool ServerChat::delUSer(Word word){
-        if(ctr.verifyUser(word.getRemetente)){
-            ctr.delUser(word.getRemetente(),word.getDado());
-        }
-    }
-    bool ServerChat::inserirGrupo(Word word){
-        ctr.newGroup(word.getRemetente(),word.getDestinatario(),word.getDado());
-    }
-    bool ServerChat::delGrupo(Word word){
-        ctr.delGroup(word.getRemetente(),word.getDestinatario(),word.getDado());
-    }
-    bool ServerChat::userSend(Word word){
-        std::string str;
-        str.append(word.getRemetente());
-
-        std::transform(str.begin(), str.end(), str.begin(), ::toupper);
+std::string ServerChat::arrumaString(std::string str)
+{
         str.erase(std::remove_if(str.begin(), str.end(),
              &IsUnexpectedCharacters), str.end());
-             
-        cmn.forward(word,ctr.userOnline(word.getRemetente()));
-        
+        return str;
+}
+
+ServerChat::ServerChat(Controle *control){
+    this->control = control;
+    logfile = std::fstream("log.txt", std::ofstream::app);
+}
+
+ServerChat::ServerChat(Controle *control, int socket){
+    this->control = control;
+    sock = socket;
+}
+
+ServerChat::~ServerChat()
+{
+    cmn.~Comunication();
+
+    delete control;
+}
+
+bool ServerChat::setSocket(int socket){
+    this->sock = socket;
+}
+
+bool ServerChat::login(Word word){
+    pthread_mutex_lock(&accessControl);
+    if(control->userLogin(arrumaString(word.getDestinatario()), 
+        arrumaString(word.getDado()), sock))
+        {
+            pthread_mutex_unlock(&accessControl);
+            return true;
+        }
+    else
+    {
+        pthread_mutex_unlock(&accessControl);
+        return false;
     }
-    bool ServerChat::grupoSend(Word word){
-        std::vector<int> listaUsers;    
+}
 
-        listaUsers = ctr.usersGroup(word.getDestinatario());
-        std::vector<int>::iterator itr;
-        for(itr = listaUsers.begin();itr != listaUsers.end();itr++){
-           cmn.forward(word,*itr);  
-        }  
-        
+bool ServerChat::logout(Word word){
+    if(ctr.userOnline(arrumaString(word.getRemetente())) != -1){
+        pthread_mutex_lock(&accessControl);
+        if(control->userLogof(arrumaString(word.getRemetente())))
+        {
+            pthread_mutex_unlock(&accessControl);
+            return true;
+        }
     }
+    return false;
+}
 
-    bool ServerChat::search(Word word){
-        ctr.listUserOn();
+bool ServerChat::erro(Word word){
+    log("Erro : " + arrumaString(word.getCommand) + 
+        "com mensagem: " + arrumaString(word.getDado()));
+}
 
-
+bool ServerChat::inserirUSer(Word word){
+    if(ctr.userOnline(word.getRemetente()) ==-1){
+        pthread_mutex_lock(&accessControl);
+        ctr.userAdd(word.getRemetente(),word.getDado());
+        pthread_mutex_unlock(&accessControl);
     }
+}
+
+bool ServerChat::delUSer(Word word){
+    if(ctr.verifyUser(word.getRemetente())){
+        pthread_mutex_lock(&accessControl);
+        ctr.delUser(word.getRemetente(),word.getDado());
+        pthread_mutex_unlock(&accessControl);
+    }
+}
+bool ServerChat::inserirGrupo(Word word){
+    pthread_mutex_lock(&accessControl);
+    ctr.newGroup(word.getRemetente(),word.getDestinatario(),word.getDado());
+    pthread_mutex_unlock(&accessControl);
+}
+bool ServerChat::delGrupo(Word word){
+    pthread_mutex_lock(&accessControl);
+    ctr.delGroup(word.getRemetente(),word.getDestinatario(),word.getDado());
+    pthread_mutex_unlock(&accessControl);
+}
+bool ServerChat::userSend(Word word){
+    std::string str;
+    str.append(word.getRemetente());
+
+    std::transform(str.begin(), str.end(), str.begin(), ::toupper);
+    str.erase(std::remove_if(str.begin(), str.end(),
+            &IsUnexpectedCharacters), str.end());
+            
+    cmn.forward(word,ctr.userOnline(word.getRemetente()));
+    
+}
+bool ServerChat::grupoSend(Word word){
+    std::vector<int> listaUsers;    
+
+    listaUsers = ctr.usersGroup(arrumaString(word.getDestinatario()));
+    std::vector<int>::iterator itr;
+    for(itr = listaUsers.begin();itr != listaUsers.end();itr++){
+        cmn.forward(word,*itr);
+    }  
+    
+}
+
+bool ServerChat::search(Word word){
+    std::vector< std::string > pessoas = ctr.listUserOn();
+    if(pessoas.size()!=0)
+    {
+        //Inserir ponto e virgula
+        std::vector<std::string>::iterator it = pessoas.begin();
+        for(; it!=pessoas.end(); it++ )
+        {
+            it->append(";");
+        }
+        std::string sPeoples(pessoas.begin(), pessoas.end());
+        cmn.sentCompleteData(word.getRemetente, word.getRemetente, word.getCommand, 
+        sPeoples);
+        return true;
+    }   
+    else
+    {
+        return false;
+    }
+    
+}
+
+void ServerChat::comando()
+{
+    
+}
+
+void ServerChat::log(std::string msg)
+{
+    logfile << msg << "\n";
+}

@@ -5,6 +5,9 @@
 #include "controle.h"
 #include "../comunication/comunication.h"
 #include "../word/word.h"
+#include <iostream>
+#include <fstream>
+
 namespace connection{
     
     class ServerChat{
@@ -13,11 +16,19 @@ namespace connection{
             Comunication cmn;
             Controle ctr;
             int sock;
+            std::fstream logfile;
+            pthread_mutex_t accessControl;
+
+            /*
+                Funcao para retirada de caracteres ineperados das funções
+            */
+            std::string arrumaString(std::string);
             
         public:
             
             ServerChat(Controle *Control);
             ServerChat(Controle *Control, int socket);
+            ~ServerChat();
 
             bool setSocket(int Socket);
             bool login(Word word);
@@ -25,17 +36,18 @@ namespace connection{
             bool erro(Word word);
             bool inserirUSer(Word word);   
             bool delUSer(Word word);   
-            bool inserirGrupo(Word word);   
+            bool inserirGrupo(Word word);
             bool delGrupo(Word word);   
             bool userSend(Word word);   
             bool grupoSend(Word word);   
             bool search(Word word);   
             void comando();
-
-         
-            friend bool IsUnexpectedCharacters(char c);             
-
-
+            /*
+                Guarda o logo no arquivo de log do servidor
+            */
+            void log(std::string);
+            
+            friend bool IsUnexpectedCharacters(char c);
     };
 }
 #endif
