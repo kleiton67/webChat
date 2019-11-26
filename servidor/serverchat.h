@@ -18,11 +18,6 @@ namespace connection{
             int sock;
             std::fstream logfile;
             pthread_mutex_t accessControl;
-
-            /*
-                Funcao para retirada de caracteres ineperados das funções
-            */
-            std::string arrumaString(std::string);
             
         public:
             
@@ -48,6 +43,10 @@ namespace connection{
             void log(std::string);
             
             friend bool IsUnexpectedCharacters(char c);
+            /*
+                Funcao para retirada de caracteres ineperados das funções
+            */
+            friend std::string arrumaString(std::string);
     };
 }
 #endif

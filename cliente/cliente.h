@@ -13,6 +13,7 @@
 #include "controle.h"
 #include "ctrlCliente.h"
 #include "../word/word.h"
+#include "../servidor/serverchat.cpp"
 
 namespace connection
 {
@@ -21,6 +22,16 @@ namespace connection
             Comunication cmn;
             std::string name;
             CtrlCliente controle;
+
+            const char * loginM = "LOGIN";
+            const char * i_userM = "I_USER";
+            const char * d_userM = "D_USER";
+            const char * i_grupoM = "I_GRUPO";
+            const char * d_grupoM = "D_GRUPO";
+            const char * g_sendM = "G_SEND";
+            const char * u_sendM = "u_SEND";
+            const char * s_grupoM = "S_GRUPO";
+            const char * logoutM = "LOGOUT";
 
         public:
             /*
@@ -97,6 +108,20 @@ namespace connection
                 Ouve conexao do servidor
             */
             void ouveConexao();
+            /*
+                Recebe mensagens de usuario
+                string: nome usuario
+                string: mensagem
+             */
+            void receiveMsgU(std::string, std::string);
+
+            /*
+                Recebe mensagem de grupos
+                string: nome do usuario
+                string: nome do grupo
+                string: mensagem do usuario
+             */
+            void receiveMsgG(std::string, std::string, std::string);
 
     };
 }

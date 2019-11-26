@@ -19,7 +19,7 @@ bool IsUnexpectedCharacters(char c)
 }
 using namespace connection;
 
-std::string ServerChat::arrumaString(std::string str)
+std::string arrumaString(std::string str)
 {
         str.erase(std::remove_if(str.begin(), str.end(),
              &IsUnexpectedCharacters), str.end());
