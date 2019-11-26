@@ -50,7 +50,7 @@ bool ServerChat::setSocket(int socket){
 bool ServerChat::login(Word word){
     pthread_mutex_lock(&accessControl);
     if(control->userLogin(arrumaString(word.getDestinatario()), 
-        arrumaString(word.getDado()), sock))
+        arrumaString(arrumaString(word.getDado())), sock))
         {
             pthread_mutex_unlock(&accessControl);
             return true;
@@ -80,39 +80,39 @@ bool ServerChat::erro(Word word){
 }
 
 bool ServerChat::inserirUSer(Word word){
-    if(ctr.userOnline(word.getRemetente()) ==-1){
+    if(ctr.userOnline(arrumaString(word.getRemetente())) ==-1){
         pthread_mutex_lock(&accessControl);
-        ctr.userAdd(word.getRemetente(),word.getDado());
+        ctr.userAdd(arrumaString(word.getRemetente()),arrumaString(word.getDado()));
         pthread_mutex_unlock(&accessControl);
     }
 }
 
 bool ServerChat::delUSer(Word word){
-    if(ctr.verifyUser(word.getRemetente())){
+    if(ctr.verifyUser(arrumaString(word.getRemetente()))){
         pthread_mutex_lock(&accessControl);
-        ctr.delUser(word.getRemetente(),word.getDado());
+        ctr.delUser(arrumaString(word.getRemetente()),arrumaString(word.getDado()));
         pthread_mutex_unlock(&accessControl);
     }
 }
 bool ServerChat::inserirGrupo(Word word){
     pthread_mutex_lock(&accessControl);
-    ctr.newGroup(word.getRemetente(),word.getDestinatario(),word.getDado());
+    ctr.newGroup(arrumaString(word.getRemetente()),arrumaString(word.getDestinatario()),arrumaString(word.getDado()));
     pthread_mutex_unlock(&accessControl);
 }
 bool ServerChat::delGrupo(Word word){
     pthread_mutex_lock(&accessControl);
-    ctr.delGroup(word.getRemetente(),word.getDestinatario(),word.getDado());
+    ctr.delGroup(arrumaString(word.getRemetente()),arrumaString(word.getDestinatario()),arrumaString(word.getDado()));
     pthread_mutex_unlock(&accessControl);
 }
 bool ServerChat::userSend(Word word){
     std::string str;
-    str.append(word.getRemetente());
+    str.append(arrumaString(word.getRemetente()));
 
     std::transform(str.begin(), str.end(), str.begin(), ::toupper);
     str.erase(std::remove_if(str.begin(), str.end(),
             &IsUnexpectedCharacters), str.end());
             
-    cmn.forward(word,ctr.userOnline(word.getRemetente()));
+    cmn.forward(word,ctr.userOnline(arrumaString(word.getRemetente())));
     
 }
 bool ServerChat::grupoSend(Word word){
