@@ -14,6 +14,8 @@
 #include "ctrlCliente.h"
 #include "../word/word.h"
 #include "../servidor/serverchat.cpp"
+#include <iostream>
+#include <algorithm>
 
 namespace connection
 {
@@ -23,20 +25,11 @@ namespace connection
             std::string name;
             CtrlCliente controle;
 
-            const char * loginM = "LOGIN";
-            const char * i_userM = "I_USER";
-            const char * d_userM = "D_USER";
-            const char * i_grupoM = "I_GRUPO";
-            const char * d_grupoM = "D_GRUPO";
-            const char * g_sendM = "G_SEND";
-            const char * u_sendM = "u_SEND";
-            const char * s_grupoM = "S_GRUPO";
-            const char * logoutM = "LOGOUT";
-
         public:
             /*
-                sockett a ser conectado
+                socket a ser conectado
             */
+            Cliente(std::string);
             Cliente(int);
             ~Cliente();
 
@@ -107,7 +100,7 @@ namespace connection
             /*
                 Ouve conexao do servidor
             */
-            void ouveConexao();
+            Word ouveConexao();
             /*
                 Recebe mensagens de usuario
                 string: nome usuario
@@ -122,6 +115,10 @@ namespace connection
                 string: mensagem do usuario
              */
             void receiveMsgG(std::string, std::string, std::string);
+            /*
+                Procura por usuarios online
+             */
+            std::string search(std::string);
 
     };
 }

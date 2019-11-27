@@ -83,6 +83,14 @@ namespace connection
 			*/
 			bool groupIsOn(std::string);
 			/*
+				retorna lista de usuarios online
+			 */
+			std::vector<std::string> getUsersOn();
+			/*
+				retorna lista de grupos
+			 */
+			std::vector<std::string> getGroup();
+			/*
 				Função para cortar string e separar em vetores
 			*/
 			friend std::vector<std::string> split(const std::string& , char );

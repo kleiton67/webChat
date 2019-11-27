@@ -166,4 +166,12 @@ bool CtrlCliente::groupIsOn(std::string grp)
 		}
 }
 
+std::vector<std::string> CtrlCliente::getUsersOn()
+{
+	return peopleOn;
+}
 
+std::vector<std::string> CtrlCliente::getGroup()
+{
+	return groupOn;
+}

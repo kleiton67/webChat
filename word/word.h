@@ -18,6 +18,16 @@
 #define TAM_CAB 74
 #define caractereDep ' '
 
+const char * loginM = "LOGIN";
+const char * i_userM = "I_USER";
+const char * d_userM = "D_USER";
+const char * i_grupoM = "I_GRUPO";
+const char * d_grupoM = "D_GRUPO";
+const char * g_sendM = "G_SEND";
+const char * u_sendM = "U_SEND";
+const char * logoutM = "LOGOUT";
+const char * erro = "ERRO";
+
 namespace connection
 {
     class Word{
