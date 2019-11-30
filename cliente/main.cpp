@@ -75,6 +75,8 @@ Gtk::Main::run(helloworld);*/
 	std::string pass;
 	std::cin >> pass;
 	cliente->login(name, pass);
+	
+	std::cout << "Login realizado com sucesso!!!\n" ;
 
 	param *parametros = new param;
 	
@@ -82,7 +84,7 @@ Gtk::Main::run(helloworld);*/
 
 	pthread_t thread;
 
-	pthread_create(&thread, NULL, trataMsg, parametros);
+	//pthread_create(&thread, NULL, trataMsg, parametros);
 
 	while(true)
 	{

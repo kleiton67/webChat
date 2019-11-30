@@ -55,11 +55,21 @@ void Word::setCmd(const char * cmd)
 void Word::setCtrl(const char * ctrl)
 {
     controle = new char[2];
-    memset(destinatario, caractereDep, 2);
+    memset(controle, caractereDep, 2);
     for(int i = 0; i < 2&&ctrl[i]!='\0'; i++)
     {
-        destinatario[i] = ctrl[i];
+        controle[i] = ctrl[i];
     }
+}
+
+void Word::setTamanho(const char * tam)
+{
+    this->tamanho = getTam(tam);
+}
+
+void Word::setTamanho(int tam)
+{
+    this->tamanho = tam;
 }
 
 Word::Word()
@@ -105,19 +115,18 @@ bool Word::setDado(const char* dado, int tam)
 {
 
     this->dado = new char[TAM_DATA];
-    memset(this->dado, caractereDep, 30);
+    this->tamanho = tam;
+    memset(this->dado, caractereDep, TAM_DATA);
     for(int i = 0; i < TAM_DATA&&dado[i]!='\0'; i++)
     {
         this->dado[i] = dado[i];
     }
-    tamanho = tam;
-
+    std::cout << "setDado: " << this->dado << "\n";
     return true;
 }
 
 const char * Word::getDado()
 {
-
     return dado;
 }
 
@@ -167,6 +176,11 @@ char * Word::getWord()
     memset(word, caractereDep, TAM_CAB+TAM_DATA);
     char * tam;
     tam = setTamanho();
+/*
+    std::cout << "getWord: all:" << remetente << " | " 
+     << destinatario << " | " << comando << " | " << controle 
+     << " | " << tam << " | " << dado << "\n";
+*/
     //Versao da aplicacao
     word[0] = versao;
     //Remetente
@@ -197,6 +211,7 @@ char * Word::getWord()
     {
        word[i] = dado[i-TAM_CAB];
     }
+    return word;
 }
 
 void Word::setWord(char * palavra)
@@ -238,6 +253,7 @@ void Word::setWord(char * palavra)
     {
         dado[i-TAM_CAB] = palavra[i];
     }
+    std::cout << "Setword: Palavra gerada: !\n";
     remetente = rmt;
     destinatario = dest;
     comando = cmd;

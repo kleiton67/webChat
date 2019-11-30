@@ -30,6 +30,7 @@
 #define logoutM "LOGOUT"
 #define erroM "ERRO"
 #define okM "OK"
+#define free "FREE"
 
 namespace connection
 {
@@ -59,6 +60,10 @@ namespace connection
             void setCmd(const char *);
             //Coloca controle conforme padrao
             void setCtrl(const char *);
+            //Coloca o tamanho na palavra
+            void setTamanho(const char *);
+            //Colocar o tamanho na palavra 
+            void setTamanho(int);
               
 
         public:

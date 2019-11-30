@@ -230,6 +230,10 @@ void ServerChat::comando()
     {
         logout(palavra);
     }
+    if(aux == free)
+    {
+        return ;
+    }
 }
 
 void ServerChat::log(std::string msg)

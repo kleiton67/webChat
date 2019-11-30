@@ -10,6 +10,11 @@
 
 using namespace connection;
 
+void Comunication::setSocket(int sock)
+{
+	this->sock = sock;
+}
+
 bool Comunication::sentData(std::string rmt, std::string dest, 
 		std::string cmd, bool more, std::string msg)
 {
@@ -23,6 +28,8 @@ bool Comunication::sentData(std::string rmt, std::string dest,
 	if(dest.size() <  30)
 		dest.resize(30-dest.size(), caractereDep);
 
+	std::cout << "sentData: Palavra tratada!\n";
+
     if(msg.size() <= TAM_DATA){
         if(more)
         {
@@ -30,21 +37,25 @@ bool Comunication::sentData(std::string rmt, std::string dest,
 			//Enviar mensagem
 			palavra.setCabecalho('1', rmt.c_str(), dest.c_str(), cmd.c_str(),
 			comando.c_str());
-
+			std::cout << "sentData: Havera mais mensagens!\n";
         }
         else
         {
+			comando = "FM";
 			palavra.setCabecalho('1', rmt.c_str(), dest.c_str(), cmd.c_str(),
 			comando.c_str());
+			std::cout << "sentData: Ultima mensagem!\n";
         }
     }
     else
     {
+		std::cout << "sentData:Mensagem muito grande\n" ;
         return false;
     }
 	palavra.setDado(msg.c_str(), msg.size());
-    write(sock, palavra.getWord(), TAM_DATA+TAM_CAB);
-
+	std::cout << "sentData: Palavra gerada: " << palavra.getWord() << "\n";
+    send(sock, palavra.getWord(), TAM_DATA+TAM_CAB, MSG_CONFIRM);
+	std::cout << "sentData: Palavra enviada: " << palavra.getWord() << "\n";
     return true;
 }
 
@@ -52,9 +63,18 @@ bool Comunication::sentData(std::string rmt, std::string dest,
 Word Comunication::receiveWord()
 {
    char data[TAM_DATA+TAM_CAB];
+   memset(data, caractereDep, TAM_CAB+TAM_DATA);
    Word palavra;
-   read(sock, data, TAM_DATA+TAM_CAB);
+   int n =  read(sock, data, TAM_DATA+TAM_CAB);
+   std::cout << "Total rcv: " << n << '\n';
+   if(n <= 1)
+   {
+	   palavra.setCabecalho('1', " ", " ", free, "FM");
+		return palavra;
+   }
+   std::cout << "ReceiveWord: Palavra recebida!!!\n" << data;
    palavra.setWord(data);
+   std::cout << "ReceiveWord: Palavra gerada: " << palavra.getDado() << "\n";
    return palavra;
 }
 
@@ -64,6 +84,7 @@ bool Comunication::sentCompleteData(std::string rmt, std::string dest,
     if(msg.size() <= TAM_DATA)
     {
         sentData(rmt, dest, cmd,false, msg);
+		std::cout << "sentCompleteData: Mensagem enviada!!!\n"; 
     }
     else
     {
@@ -84,7 +105,7 @@ bool Comunication::sentCompleteData(std::string rmt, std::string dest,
 				"sentCompleteData: Falha no envio da mensagem!!!\n";
 
     }
-
+	std::cout << "sentCompleteData: Mensagem enviada!!!\n";
     return true;
 }
 

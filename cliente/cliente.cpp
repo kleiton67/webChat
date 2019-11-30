@@ -38,14 +38,14 @@ Cliente::Cliente(std::string ad, int porta)
         std::cerr << msg << "\n";
         exit(EXIT_FAILURE);
     }
+    cmn.setSocket(sock);
 
 }
 
 Cliente::Cliente(int sock)
 {
     this->sock = sock;
-    Comunication com(sock);
-    cmn = com;
+    cmn.setSocket(sock);
 }
 
 Cliente::~Cliente()
@@ -55,13 +55,14 @@ Cliente::~Cliente()
 
 bool Cliente::login(std::string user, std::string pass)
 {
-    cmn.sentCompleteData(user, " ", loginM, pass);
+    cmn.sentCompleteData(user.c_str(), "server", loginM, pass);
+
     return true;
 }
 
 bool Cliente::logout()
 {
-    cmn.sentCompleteData(name.c_str(), " ", logoutM, "  ");
+    cmn.sentCompleteData(name.c_str(), "server", logoutM, "nada");
     return true;
 }
 
@@ -72,12 +73,12 @@ bool Cliente::erro(std::string msg)
 
 bool Cliente::inserirUser(std::string user, std::string pass)
 {
-    cmn.sentCompleteData(user, " ", i_userM, pass);
+    cmn.sentCompleteData(user, "server", i_userM, pass);
 }
 
 bool Cliente::delUser(std::string nome, std::string pass)
 {
-    cmn.sentCompleteData(nome, " ", d_userM, pass);
+    cmn.sentCompleteData(nome, "server", d_userM, pass);
 }
 
 bool Cliente::inserirGrupo(std::string nome, std::string adm,
@@ -154,5 +155,6 @@ std::string Cliente::search(std::string user)
 
 std::vector<Mensagem> Cliente::getMensagem(std::string user)
 {
+    std::cout << "Obtendo mensagens de : " << user << "\n";
     return controle.getMessages(user);
 }

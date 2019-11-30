@@ -15,7 +15,7 @@ ServerT::ServerT(std::string address, short int port)
     ad_Server.sin_family = AF_INET;
     this->port = port;
     ad_Server.sin_port = htons(port);
-    controle = new Controle;
+    controle = new Controle();
 }
 
 ServerT::~ServerT()

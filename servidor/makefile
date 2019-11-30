@@ -15,4 +15,4 @@ serverchat.o : serverchat.cpp serverchat.h
 comunication.o : ../comunication/comunication.cpp ../comunication/comunication.cpp
 	g++ ${LIB} -c ../comunication/comunication.cpp
 clean :
-	rm ./bin/server.run ${OBJ}
+	rm server.run ${OBJ}

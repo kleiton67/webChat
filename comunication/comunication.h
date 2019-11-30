@@ -33,6 +33,8 @@ namespace connection
 			int sock = 0;
 			//Envia uma mensagem(Data)
 		public:
+			//carrega socket para comunicação
+			void setSocket(int);
             bool sentData(std::string rmt, std::string dest, 
 				std::string cmd, bool more, std::string msg);
 			//Recebe uma palavra
