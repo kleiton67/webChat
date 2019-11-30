@@ -5,22 +5,20 @@
 
 */
 
-#ifndef CLIENTE_H_
-#define CLIENTE_H_
-
 #include <string>
 #include "../comunication/comunication.h"
-#include "controle.h"
 #include "ctrlCliente.h"
-#include "../word/word.h"
-#include "../servidor/serverchat.cpp"
 #include <iostream>
 #include <algorithm>
 
+
+#ifndef CLIENTE_H_
+#define CLIENTE_H_
 namespace connection
 {
     class Cliente{
         private:
+            int sock;
             Comunication cmn;
             std::string name;
             CtrlCliente controle;
@@ -29,7 +27,7 @@ namespace connection
             /*
                 socket a ser conectado
             */
-            Cliente(std::string);
+            Cliente(std::string, int);
             Cliente(int);
             ~Cliente();
 
@@ -119,6 +117,10 @@ namespace connection
                 Procura por usuarios online
              */
             std::string search(std::string);
+            /*
+                Retorna lista de mensagens trocadas com usuario ou grupo
+            */
+           std::vector<Mensagem> getMensagem(std::string);
 
     };
 }

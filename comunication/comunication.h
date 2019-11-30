@@ -8,9 +8,6 @@
 */
 
 
-#ifndef COMUNICATION_H_
-#define COMUNICATION_H_
-
 #include <string>
 #include <sys/types.h>
 #include <unistd.h>
@@ -21,6 +18,9 @@
 #include <cstdlib> //system
 #include <fcntl.h> // open
 #include "../word/word.h"
+
+#ifndef COMUNICATION_H_
+#define COMUNICATION_H_
 
 
 namespace connection

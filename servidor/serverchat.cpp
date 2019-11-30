@@ -75,11 +75,11 @@ bool ServerChat::logout(Word word){
 }
 
 bool ServerChat::erro(Word word){
-    log("Erro : " + arrumaString(word.getCommand) + 
+    log("Erro : " + arrumaString(word.getCommand()) + 
         "com mensagem: " + arrumaString(word.getDado()));
 }
 
-bool ServerChat::inserirUSer(Word word){
+bool ServerChat::inserirUser(Word word){
     if(ctr.userOnline(arrumaString(word.getRemetente())) ==-1){
         pthread_mutex_lock(&accessControl);
         ctr.userAdd(arrumaString(word.getRemetente()),arrumaString(word.getDado()));
@@ -87,7 +87,7 @@ bool ServerChat::inserirUSer(Word word){
     }
 }
 
-bool ServerChat::delUSer(Word word){
+bool ServerChat::delUser(Word word){
     if(ctr.verifyUser(arrumaString(word.getRemetente()))){
         pthread_mutex_lock(&accessControl);
         ctr.delUser(arrumaString(word.getRemetente()),arrumaString(word.getDado()));
@@ -132,12 +132,13 @@ bool ServerChat::search(Word word){
     {
         //Inserir ponto e virgula
         std::vector<std::string>::iterator it = pessoas.begin();
+        std::string sPeoples;
         for(; it!=pessoas.end(); it++ )
         {
             it->append(";");
+            sPeoples += *it;
         }
-        std::string sPeoples(pessoas.begin(), pessoas.end());
-        cmn.sentCompleteData(word.getRemetente, word.getRemetente, word.getCommand, 
+        cmn.sentCompleteData(word.getRemetente(), word.getRemetente(), word.getCommand(), 
         sPeoples);
         return true;
     }   
@@ -150,7 +151,85 @@ bool ServerChat::search(Word word){
 
 void ServerChat::comando()
 {
-    
+    Word palavra;
+    //Envia respostas para o cliente conectado
+    palavra = cmn.receiveWord();
+    std::string aux;
+    aux = palavra.getCommand();
+    std::transform(aux.begin(), aux.end(), aux.begin(), ::toupper);
+    aux.erase(std::remove_if(aux.begin(), aux.end(),
+                        &IsUnexpectedCharacters), aux.end());
+    std::cout << "Cliente :" << palavra.getRemetente() <<
+            "solicitou " << aux << "\n";
+    if(aux == loginM)
+    {
+        
+        if(login(palavra))
+        {
+            cmn.sentData(" ", palavra.getRemetente(), okM, false, " ");
+        }
+        else
+        {
+            cmn.sentData(" ", palavra.getRemetente(), erroM, false, " ");
+        }
+        
+    }
+    if(aux == i_userM)
+    {
+        if(inserirUser(palavra))
+        {
+            cmn.sentData(" ", palavra.getRemetente(), okM, false, " ");
+        }
+        else
+        {
+            cmn.sentData(" ", palavra.getRemetente(), erroM, false, " ");
+        }
+    }
+    if(aux == d_userM)
+    {
+        if(delUser(palavra))
+        {
+            cmn.sentData(" ", palavra.getRemetente(), okM, false, " ");
+        }
+        else
+        {
+            cmn.sentData(" ", palavra.getRemetente(), erroM, false, " ");
+        }
+    }
+    if(aux == i_grupoM)
+    {
+        if(inserirGrupo(palavra))
+        {
+            cmn.sentData(" ", palavra.getRemetente(), okM, false, " ");
+        }
+        else
+        {
+            cmn.sentData(" ", palavra.getRemetente(), erroM, false, " ");
+        }
+    }
+    if(aux == d_grupoM)
+    {
+        if(delGrupo(palavra))
+        {
+            cmn.sentData(" ", palavra.getRemetente(), okM, false, " ");
+        }
+        else
+        {
+            cmn.sentData(" ", palavra.getRemetente(), erroM, false, " ");
+        }
+    }
+    if(aux == g_sendM)
+    {
+        grupoSend(palavra);
+    }
+    if(aux == u_sendM)
+    {
+        userSend(palavra);
+    }
+    if(aux == logoutM)
+    {
+        logout(palavra);
+    }
 }
 
 void ServerChat::log(std::string msg)

@@ -29,13 +29,16 @@ namespace connection{
             bool login(Word word);
             bool logout(Word word);
             bool erro(Word word);
-            bool inserirUSer(Word word);   
-            bool delUSer(Word word);   
+            bool inserirUser(Word word);   
+            bool delUser(Word word);   
             bool inserirGrupo(Word word);
             bool delGrupo(Word word);   
             bool userSend(Word word);   
             bool grupoSend(Word word);   
-            bool search(Word word);   
+            bool search(Word word);
+            /*
+                Ouve comunicaçãoo com usuario e trata a solicitações
+            */
             void comando();
             /*
                 Guarda o logo no arquivo de log do servidor

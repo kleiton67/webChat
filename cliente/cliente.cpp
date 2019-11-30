@@ -9,16 +9,13 @@
 
 using namespace connection;
 
-Cliente::Cliente(std::string ad)
+Cliente::Cliente(std::string ad, int porta)
 {
     /*
         Criar o proprio socket
      */
     int CreateSocket = 0,n = 0;
-    char dataReceived[1024];
     struct sockaddr_in ipOfServer;
- 
-    memset(dataReceived, '0' ,sizeof(dataReceived));
  
     if((CreateSocket = socket(AF_INET, SOCK_STREAM, 0))< 0)
     {
@@ -26,18 +23,27 @@ Cliente::Cliente(std::string ad)
     }
  
     ipOfServer.sin_family = AF_INET;
-    ipOfServer.sin_port = htons(30100);
+    ipOfServer.sin_port = htons(porta);
     ipOfServer.sin_addr.s_addr = inet_addr(ad.c_str());
+    sock = socket(AF_INET, SOCK_STREAM, 0);
+    try{
     if(connect(CreateSocket, (struct sockaddr *)&ipOfServer,
                              sizeof(ipOfServer))<0)
     {
-        printf("Connection failed due to port and ip problems\n");
+        throw "Falha ao conectar ao servidor!";
+    }
+    }
+    catch (const char * msg)
+    {
+        std::cerr << msg << "\n";
+        exit(EXIT_FAILURE);
     }
 
 }
 
 Cliente::Cliente(int sock)
 {
+    this->sock = sock;
     Comunication com(sock);
     cmn = com;
 }
@@ -55,7 +61,7 @@ bool Cliente::login(std::string user, std::string pass)
 
 bool Cliente::logout()
 {
-    cmn.sentCompleteData(name.c_str, " ", logoutM, "  ");
+    cmn.sentCompleteData(name.c_str(), " ", logoutM, "  ");
     return true;
 }
 
@@ -144,4 +150,9 @@ std::string Cliente::search(std::string user)
     std::vector<std::string>:: iterator it = find(
         listaON.begin(), listaON.end(), user);
     return *it;
+}
+
+std::vector<Mensagem> Cliente::getMensagem(std::string user)
+{
+    return controle.getMessages(user);
 }

@@ -34,6 +34,7 @@ std::vector<std::string> split(const std::string& s, char delimiter)
 bool CtrlCliente::addMsgPeople(std::string nome, std::string rmt, 
 		std::string msg)
 {
+	pthread_mutex_lock(& restrict_access);
 	Mensagem msgConv;	
 	std::map<std::string, std::vector<Mensagem> >::iterator 
 			itp = peoples_msg.find(nome);
@@ -48,6 +49,8 @@ bool CtrlCliente::addMsgPeople(std::string nome, std::string rmt,
 		conjMsg.push_back(msgConv);
 		peoples_msg.insert(std::pair<std::string, std::vector<Mensagem> >
 				(nome, conjMsg));
+		
+		pthread_mutex_unlock(&restrict_access);
 		return true;
 	}
 	//se ela ja existe adicionar a pessoa
@@ -58,13 +61,16 @@ bool CtrlCliente::addMsgPeople(std::string nome, std::string rmt,
 		msgConv.user = rmt;
 		itp = peoples_msg.end();
 		itp->second.push_back(msgConv);
+		pthread_mutex_unlock(&restrict_access);
 		return true;
 	}
+	pthread_mutex_unlock(&restrict_access);
 }
 
 bool CtrlCliente::addMsgGrupo(std::string grp, std::string rmt, 
 			std::string msg)
 {
+	pthread_mutex_lock(& restrict_access);
 	Mensagem msgConv;	
 	std::map<std::string, std::vector<Mensagem> >::iterator 
 			itg = grupo_msg.find(grp);
@@ -78,6 +84,7 @@ bool CtrlCliente::addMsgGrupo(std::string grp, std::string rmt,
 		conjMsg.push_back(msgConv);
 		grupo_msg.insert(std::pair<std::string, std::vector<Mensagem> >
 				(grp, conjMsg));
+		pthread_mutex_unlock(&restrict_access);
 		return true;
 	}
 	//se ele ja existe adicionar a mensgem da pessoa
@@ -88,56 +95,68 @@ bool CtrlCliente::addMsgGrupo(std::string grp, std::string rmt,
 		msgConv.user = rmt;
 		itg = grupo_msg.end();
 		itg->second.push_back(msgConv);
+		pthread_mutex_unlock(&restrict_access);
 		return true;
 	}
+	pthread_mutex_unlock(&restrict_access);
 }
 
 bool CtrlCliente::rmPeople(std::string nome)
 {
+	pthread_mutex_lock(& restrict_access);
 	std::map<std::string, std::vector<Mensagem> >::iterator 
 			itp = peoples_msg.find(nome);
 	
 	//Senao encontrou a pessoa, cadastra-la
 	if(itp == peoples_msg.end())
 	{
+		pthread_mutex_unlock(&restrict_access);
 		return false;
 	}
 	else
 	{
+		pthread_mutex_unlock(&restrict_access);
 		peoples_msg.erase(itp);
 		return true;
 	}
 }
 
-bool CtrlCliente::rmPeople(std::string grupo)
+bool CtrlCliente::rmGrupo(std::string grupo)
 {
+	pthread_mutex_lock(& restrict_access);
 	std::map<std::string, std::vector<Mensagem> >::iterator 
 			itp = grupo_msg.find(grupo);
 	
 	//Senao encontrou a pessoa, cadastra-la
 	if(itp == grupo_msg.end())
 	{
+		pthread_mutex_unlock(&restrict_access);
 		return false;
 	}
 	else
 	{
 		grupo_msg.erase(itp);
+		pthread_mutex_unlock(&restrict_access);
 		return true;
 	}
 }
 
 void CtrlCliente::updatePeopleOn(std::string listPeoples)
 {
+	pthread_mutex_lock(& restrict_access);
 	peopleOn.erase(peopleOn.begin(), peopleOn.end());
 
 	peopleOn = split(listPeoples, DELIMITER);
+	pthread_mutex_unlock(&restrict_access);
 }
 
 void CtrlCliente::updateGrupo(std::string listGroup)
 {
+	pthread_mutex_lock(& restrict_access);
 	groupOn.erase(groupOn.begin(), groupOn.end());
 
 	groupOn = split(listGroup, DELIMITER);
+	pthread_mutex_unlock(&restrict_access);
 }
 
 bool CtrlCliente::userIsOn(std::string user)
@@ -174,4 +193,19 @@ std::vector<std::string> CtrlCliente::getUsersOn()
 std::vector<std::string> CtrlCliente::getGroup()
 {
 	return groupOn;
+}
+
+std::vector<Mensagem> CtrlCliente::getMessages(std::string user)
+{
+	std::map <std::string, std::vector<Mensagem> >::iterator it;
+	it = peoples_msg.find(user);
+	if(it != peoples_msg.end())
+		return it->second;
+	else
+	{
+		it = grupo_msg.find(user);
+		if(it != grupo_msg.end())
+		return it->second;
+	}
+	return std::vector<Mensagem> ();
 }

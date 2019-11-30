@@ -6,9 +6,6 @@
     Implementação
 */
 
-#ifndef CTRLCLIENTE_H
-#define CTRLCLIENTE_H
-
 #include <vector>
 #include <map>
 #include <vector>
@@ -19,6 +16,10 @@
 #include <iostream>
 #include <sstream>
 #include <algorithm>
+#include <pthread.h>
+
+#ifndef CTRLCLIENTE_H
+#define CTRLCLIENTE_H
 
 #define DELIMITER ';'
 
@@ -36,6 +37,7 @@ namespace connection
 			std::vector<std::string> peopleOn;
 			std::vector<std::string> groupOn;
 			std::map <std::string, std::vector<Mensagem> > peoples_msg;
+			pthread_mutex_t restrict_access;
 			/*
 				Chave é o nome do grupo, segunda parte:
 					nome é a a pessoa, segundo é a mensagem
@@ -65,7 +67,7 @@ namespace connection
 			/*	
 				Nome do grupo a ser removido
 			*/	
-			bool rmgrupo(std::string);
+			bool rmGrupo(std::string);
 			/*
 				Mensagem com todos os usuarios online
 			*/
@@ -90,6 +92,10 @@ namespace connection
 				retorna lista de grupos
 			 */
 			std::vector<std::string> getGroup();
+			/*
+				Funcao para retornar mensagens de uma conversa
+			*/
+			std::vector<Mensagem> getMessages(std::string);
 			/*
 				Função para cortar string e separar em vetores
 			*/
