@@ -23,7 +23,7 @@ void *serveCliente(void* param)
     parametros = (_Params*) param;
 
     ServerChat connectCliente(parametros->controle, 
-        parametros->id);
+        parametros->socketClient);
     //Cuida da conexão com o cliente
     std::cout << "Novo cliente conectado!!!\n";
     while(true)
