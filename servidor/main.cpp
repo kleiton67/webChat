@@ -25,7 +25,8 @@ void *serveCliente(void* param)
     ServerChat connectCliente(parametros->controle, 
         parametros->socketClient);
     //Cuida da conexão com o cliente
-    std::cout << "Novo cliente conectado!!!\n";
+    std::cout << "ServeClient: Socket do cliente: " << parametros->socketClient 
+    << "\n";
     while(true)
         connectCliente.comando();
     return (void*)NULL;

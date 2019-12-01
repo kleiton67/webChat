@@ -34,6 +34,7 @@ ServerChat::ServerChat(Controle *control){
 ServerChat::ServerChat(Controle *control, int socket){
     this->control = control;
     sock = socket;
+    cmn.setSocket(socket);
 }
 
 ServerChat::~ServerChat()

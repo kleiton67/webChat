@@ -39,7 +39,7 @@ Cliente::Cliente(std::string ad, int porta)
         exit(EXIT_FAILURE);
     }
     cmn.setSocket(sock);
-
+    std::cout << "Cliente: socket = " << sock << "\n";
 }
 
 Cliente::Cliente(int sock)
@@ -55,14 +55,13 @@ Cliente::~Cliente()
 
 bool Cliente::login(std::string user, std::string pass)
 {
-    cmn.sentCompleteData(user.c_str(), "server", loginM, pass);
-
+    cmn.sentCompleteData(user, "server", loginM, pass);
     return true;
 }
 
 bool Cliente::logout()
 {
-    cmn.sentCompleteData(name.c_str(), "server", logoutM, "nada");
+    cmn.sentCompleteData(name, "server", logoutM, "nada");
     return true;
 }
 

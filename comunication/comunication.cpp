@@ -13,6 +13,7 @@ using namespace connection;
 void Comunication::setSocket(int sock)
 {
 	this->sock = sock;
+	std::cout << "setSocket: soket = " << sock;
 }
 
 bool Comunication::sentData(std::string rmt, std::string dest, 
@@ -20,6 +21,7 @@ bool Comunication::sentData(std::string rmt, std::string dest,
 {
 	Word palavra;
 	std::string comando;
+	std::cout << "sentData: socket : " << sock << "\n";
 
 	//Coloca tamanho no certo na string 
 	// para remetente e destinatario
@@ -54,6 +56,7 @@ bool Comunication::sentData(std::string rmt, std::string dest,
     }
 	palavra.setDado(msg.c_str(), msg.size());
 	std::cout << "sentData: Palavra gerada: " << palavra.getWord() << "\n";
+	std::cout << "sentData: Enviado msg para socket :" << sock << "\n";
     send(sock, palavra.getWord(), TAM_DATA+TAM_CAB, MSG_CONFIRM);
 	std::cout << "sentData: Palavra enviada: " << palavra.getWord() << "\n";
     return true;
@@ -65,13 +68,9 @@ Word Comunication::receiveWord()
    char data[TAM_DATA+TAM_CAB];
    memset(data, caractereDep, TAM_CAB+TAM_DATA);
    Word palavra;
+   std::cout << "ReceiveWord: socket :" << sock<<"\n";
    int n =  read(sock, data, TAM_DATA+TAM_CAB);
    std::cout << "Total rcv: " << n << '\n';
-   if(n <= 1)
-   {
-	   palavra.setCabecalho('1', " ", " ", free, "FM");
-		return palavra;
-   }
    std::cout << "ReceiveWord: Palavra recebida!!!\n" << data;
    palavra.setWord(data);
    std::cout << "ReceiveWord: Palavra gerada: " << palavra.getDado() << "\n";
