@@ -77,6 +77,11 @@ Word::Word()
 
 }
 
+Word::Word(char versao)
+{
+    this->versao = versao;
+}
+
 Word::~Word()
 {
     delete remetente;
@@ -108,6 +113,8 @@ int Word::getTamanho()
 
 char * Word::getCommand()
 {
+    std::cout << "getCommand: " << comando <<"\n";
+    print(comando, 7);
     return comando;
 }
 
@@ -176,11 +183,11 @@ char * Word::getWord()
     memset(word, caractereDep, TAM_CAB+TAM_DATA);
     char * tam;
     tam = setTamanho();
-/*
-    std::cout << "getWord: all:" << remetente << " | " 
+
+   /* std::cout << "getWord: all:" << remetente << " | " 
      << destinatario << " | " << comando << " | " << controle 
-     << " | " << tam << " | " << dado << "\n";
-*/
+     << " | " << tam << " | " << dado << "\n";*/
+
     //Versao da aplicacao
     word[0] = versao;
     //Remetente
@@ -211,6 +218,7 @@ char * Word::getWord()
     {
        word[i] = dado[i-TAM_CAB];
     }
+    //std::cout << "getWord: " << word << "\n";
     return word;
 }
 
@@ -222,6 +230,14 @@ void Word::setWord(char * palavra)
     char * cmd = new char[7];
     char * ctrl = new char[2];
     char * tam = new char[4];
+    char * data = new char [TAM_DATA];
+
+    memset(rmt, caractereDep, 30);
+    memset(dest, caractereDep, 30);
+    memset(cmd, caractereDep, 7);
+    memset(ctrl, caractereDep, 2);
+    memset(tam, caractereDep, 4);
+    memset(data, caractereDep, TAM_DATA);
     //Versao da aplicacao
     versao = palavra[0];
     //Remetente
@@ -248,17 +264,22 @@ void Word::setWord(char * palavra)
     tam[1] = palavra[71];
     tam[2] = palavra[72];
     tam[3] = palavra[73];
+    std::cout << "Setword : Todo o cabecalho pronto\n" << "\n";
     //Mensagem
     for(int i = TAM_CAB; i<TAM_DATA+TAM_CAB; i++)
     {
-        dado[i-TAM_CAB] = palavra[i];
+        data[i-TAM_CAB] = palavra[i];
     }
-    std::cout << "Setword: Palavra gerada: !\n";
     remetente = rmt;
     destinatario = dest;
     comando = cmd;
     controle = ctrl;
     tamanho = getTam(tam);
+    dado = data;
+    std::cout << "SetWord: all:" << remetente << " | " 
+     << destinatario << " | " << comando << " | " << controle 
+     << " | " << tam << " | " << dado << "\n";
+
 }
 
 void Word::print(char *vetor, int tam)
@@ -269,4 +290,21 @@ void Word::print(char *vetor, int tam)
         printf("%c\n", vetor[i]);
     }
     printf("Fim da impressao do vetor\n");
+}
+
+void Word::copy(Word palavra)
+{
+    remetente = new char[30];
+    destinatario = new char[30];
+    comando = new char[7];
+    controle = new char[2];
+    dado = new char [TAM_DATA];
+
+    versao = palavra.versao;
+    remetente = palavra.remetente;
+    destinatario = palavra.destinatario;
+    comando = palavra.comando;
+    controle = palavra.controle;
+    tamanho = palavra.tamanho;
+    dado = palavra.dado;
 }

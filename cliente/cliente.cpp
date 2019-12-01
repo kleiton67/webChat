@@ -17,17 +17,17 @@ Cliente::Cliente(std::string ad, int porta)
     int CreateSocket = 0,n = 0;
     struct sockaddr_in ipOfServer;
  
-    if((CreateSocket = socket(AF_INET, SOCK_STREAM, 0))< 0)
+    /*if((CreateSocket = socket(AF_INET, SOCK_STREAM, 0))< 0)
     {
         printf("Socket not created \n");
-    }
+    }*/
  
     ipOfServer.sin_family = AF_INET;
     ipOfServer.sin_port = htons(porta);
     ipOfServer.sin_addr.s_addr = inet_addr(ad.c_str());
     sock = socket(AF_INET, SOCK_STREAM, 0);
     try{
-    if(connect(CreateSocket, (struct sockaddr *)&ipOfServer,
+    if(connect(sock, (struct sockaddr *)&ipOfServer,
                              sizeof(ipOfServer))<0)
     {
         throw "Falha ao conectar ao servidor!";

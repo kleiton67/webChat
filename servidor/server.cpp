@@ -11,7 +11,7 @@ using namespace connection;
 ServerT::ServerT(std::string address, short int port)
 {
     memset(&ad_Server, '0', sizeof(ad_Server));
-    ad_Server.sin_addr.s_addr = htonl(INADDR_ANY);
+    ad_Server.sin_addr.s_addr = inet_addr(address.c_str());
     ad_Server.sin_family = AF_INET;
     this->port = port;
     ad_Server.sin_port = htons(port);

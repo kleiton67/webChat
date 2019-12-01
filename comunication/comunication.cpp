@@ -22,6 +22,7 @@ bool Comunication::sentData(std::string rmt, std::string dest,
 	Word palavra;
 	std::string comando;
 	std::cout << "sentData: socket : " << sock << "\n";
+	char * palavraC = new char[TAM_CAB+TAM_DATA];
 
 	//Coloca tamanho no certo na string 
 	// para remetente e destinatario
@@ -55,26 +56,28 @@ bool Comunication::sentData(std::string rmt, std::string dest,
         return false;
     }
 	palavra.setDado(msg.c_str(), msg.size());
-	std::cout << "sentData: Palavra gerada: " << palavra.getWord() << "\n";
-	std::cout << "sentData: Enviado msg para socket :" << sock << "\n";
-    send(sock, palavra.getWord(), TAM_DATA+TAM_CAB, MSG_CONFIRM);
+	palavraC = palavra.getWord();
+	std::cout << "sentData: Palavra gerada: " << palavraC << "\n";
+	std::cout << "sentData: Enviando msg para socket :" << sock << "\n";
+    send(sock, palavraC, TAM_DATA+TAM_CAB, 0);
 	std::cout << "sentData: Palavra enviada: " << palavra.getWord() << "\n";
+	delete palavraC;
     return true;
 }
 
 
 Word Comunication::receiveWord()
 {
-   char data[TAM_DATA+TAM_CAB];
+   char *data = new char[TAM_CAB+TAM_DATA];
    memset(data, caractereDep, TAM_CAB+TAM_DATA);
-   Word palavra;
+   Word * palavra = new Word;
    std::cout << "ReceiveWord: socket :" << sock<<"\n";
    int n =  read(sock, data, TAM_DATA+TAM_CAB);
    std::cout << "Total rcv: " << n << '\n';
-   std::cout << "ReceiveWord: Palavra recebida!!!\n" << data;
-   palavra.setWord(data);
-   std::cout << "ReceiveWord: Palavra gerada: " << palavra.getDado() << "\n";
-   return palavra;
+   std::cout << "ReceiveWord: Palavra recebida : " << data << "end\n";
+   palavra->setWord(data);
+   std::cout << "ReceiveWord: Palavra gerada: " << palavra->getWord() << "\n";
+   return * palavra;
 }
 
 bool Comunication::sentCompleteData(std::string rmt, std::string dest,

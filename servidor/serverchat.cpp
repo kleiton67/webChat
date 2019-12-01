@@ -157,6 +157,7 @@ void ServerChat::comando()
     palavra = cmn.receiveWord();
     std::string aux;
     aux = palavra.getCommand();
+    std::cout << "comando: Comando solicitado : " << palavra.getWord() << "\n";
     std::transform(aux.begin(), aux.end(), aux.begin(), ::toupper);
     aux.erase(std::remove_if(aux.begin(), aux.end(),
                         &IsUnexpectedCharacters), aux.end());

@@ -68,6 +68,7 @@ namespace connection
 
         public:
             Word();
+            Word(char );
             ~Word();
             //Verifica se ha mensagem 
             bool nextMessage();
@@ -92,8 +93,23 @@ namespace connection
             void setWord(char *);
             //Imprime vetor
             void print(char * vetor, int tam);
+
+            void copy(Word);
         
-            
+           Word operator=(const Word& a)
+            {
+                remetente = new char[30];
+                comando = new char[7];
+                controle = new char[2];
+                dado = new char [TAM_DATA];
+                versao = a.versao;
+                remetente = a.remetente;
+                destinatario = a.destinatario;
+                comando = a.comando;
+                tamanho = a.tamanho;
+                dado = a.dado;
+                return *this;
+            }
     };
 
 }
