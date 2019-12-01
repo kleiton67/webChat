@@ -129,7 +129,7 @@ bool Word::setDado(const char* dado, int tam)
     {
         this->dado[i] = dado[i];
     }
-    std::cout << "setDado: " << this->dado << "\n";
+    //std::cout << "setDado: " << this->dado << "\n";
     return true;
 }
 
@@ -277,9 +277,9 @@ void Word::setWord(char * palavra)
     controle = ctrl;
     tamanho = getTam(tam);
     dado = data;
-    std::cout << "SetWord: all:" << remetente << " | " 
+    /*std::cout << "SetWord: all:" << remetente << " | " 
      << destinatario << " | " << comando << " | " << controle 
-     << " | " << tam << " | " << dado << "\n";
+     << " | " << tam << " | " << dado << "\n";*/
 
 }
 

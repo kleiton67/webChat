@@ -85,7 +85,9 @@ bool ServerChat::inserirUser(Word word){
         pthread_mutex_lock(&accessControl);
         ctr.userAdd(arrumaString(word.getRemetente()),arrumaString(word.getDado()));
         pthread_mutex_unlock(&accessControl);
+        return true;
     }
+    return true;
 }
 
 bool ServerChat::delUser(Word word){
@@ -93,17 +95,20 @@ bool ServerChat::delUser(Word word){
         pthread_mutex_lock(&accessControl);
         ctr.delUser(arrumaString(word.getRemetente()),arrumaString(word.getDado()));
         pthread_mutex_unlock(&accessControl);
+        return true;
     }
 }
 bool ServerChat::inserirGrupo(Word word){
     pthread_mutex_lock(&accessControl);
     ctr.newGroup(arrumaString(word.getRemetente()),arrumaString(word.getDestinatario()),arrumaString(word.getDado()));
     pthread_mutex_unlock(&accessControl);
+    return true;
 }
 bool ServerChat::delGrupo(Word word){
     pthread_mutex_lock(&accessControl);
     ctr.delGroup(arrumaString(word.getRemetente()),arrumaString(word.getDestinatario()),arrumaString(word.getDado()));
     pthread_mutex_unlock(&accessControl);
+    return true;
 }
 bool ServerChat::userSend(Word word){
     std::string str;
@@ -114,7 +119,7 @@ bool ServerChat::userSend(Word word){
             &IsUnexpectedCharacters), str.end());
             
     cmn.forward(word,ctr.userOnline(arrumaString(word.getRemetente())));
-    
+    return true;
 }
 bool ServerChat::grupoSend(Word word){
     std::vector<int> listaUsers;    
@@ -124,7 +129,7 @@ bool ServerChat::grupoSend(Word word){
     for(itr = listaUsers.begin();itr != listaUsers.end();itr++){
         cmn.forward(word,*itr);
     }  
-    
+    return true;
 }
 
 bool ServerChat::search(Word word){
