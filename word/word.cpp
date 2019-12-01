@@ -84,11 +84,12 @@ Word::Word(char versao)
 
 Word::~Word()
 {
+    /*
     delete remetente;
     delete destinatario;
     delete comando;
     delete controle;
-    delete dado;
+    delete dado;*/
 }
 
 

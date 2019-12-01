@@ -70,14 +70,11 @@ Word Comunication::receiveWord()
 {
    char *data = new char[TAM_CAB+TAM_DATA];
    memset(data, caractereDep, TAM_CAB+TAM_DATA);
-   Word * palavra = new Word;
-   std::cout << "ReceiveWord: socket :" << sock<<"\n";
+   Word palavra('1');
    int n =  read(sock, data, TAM_DATA+TAM_CAB);
-   std::cout << "Total rcv: " << n << '\n';
-   std::cout << "ReceiveWord: Palavra recebida : " << data << "end\n";
-   palavra->setWord(data);
-   std::cout << "ReceiveWord: Palavra gerada: " << palavra->getWord() << "\n";
-   return * palavra;
+   palavra.setWord(data);
+   std::cout << "ReceiveWord: Palavra gerada: " << palavra.getWord() << "\n";
+   return palavra;
 }
 
 bool Comunication::sentCompleteData(std::string rmt, std::string dest,

@@ -96,7 +96,7 @@ namespace connection
 
             void copy(Word);
         
-           Word operator=(const Word& a)
+           Word& operator=(const Word& a)
             {
                 remetente = new char[30];
                 comando = new char[7];

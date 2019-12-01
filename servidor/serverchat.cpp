@@ -152,12 +152,13 @@ bool ServerChat::search(Word word){
 
 void ServerChat::comando()
 {
-    Word palavra;
+    Word palavra('1');
     //Envia respostas para o cliente conectado
     palavra = cmn.receiveWord();
+        std::cout << "comando: Comando solicitado : " << palavra.getWord() << "\n";
+
     std::string aux;
     aux = palavra.getCommand();
-    std::cout << "comando: Comando solicitado : " << palavra.getWord() << "\n";
     std::transform(aux.begin(), aux.end(), aux.begin(), ::toupper);
     aux.erase(std::remove_if(aux.begin(), aux.end(),
                         &IsUnexpectedCharacters), aux.end());
