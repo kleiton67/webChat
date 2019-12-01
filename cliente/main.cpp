@@ -27,35 +27,22 @@ typedef struct param
 	Cliente * cliente;
 }param;
 
-void * trataMsg(void *parametros)
+std::string cmdRec(Word palavra)
 {
-	param * aux;
-	aux = (param *) parametros;
-	Cliente *cliente = aux->cliente;
-	while(true)
-	{
-		Word palavra;
-		palavra = cliente->ouveConexao();
+	
 		std::string aux;
         aux = palavra.getCommand();
         std::transform(aux.begin(), aux.end(), aux.begin(), ::toupper);
 		aux.erase(std::remove_if(aux.begin(), aux.end(),
 						 &IsUnexpectedCharacters), aux.end());
-		if(aux.compare(u_sendM))
-		{
-			std::cout << "Mensagem recebida: " << palavra.getDado() << "\n";
-			cliente->receiveMsgU(palavra.getRemetente(), palavra.getDado());
-		}
-		else if(aux.compare(g_sendM))
-		{
-			std::cout << "Mensagem recebida: " << palavra.getDado() << "\n";
-			cliente->receiveMsgU(palavra.getRemetente(), palavra.getDado());
-		}
-		else if(aux.compare(erroM))
-		{
-			std::cout << "Ouve algum erro!!!" << "\n";
-		}
-	}
+		return aux;
+}
+
+void * trataMsg(void *parametros)
+{
+	param * aux;
+	aux = (param *) parametros;
+	Cliente *cliente = aux->cliente;
 }
 
 int main (int argc, char *argv[])
@@ -68,15 +55,43 @@ Gtk::Main::run(helloworld);*/
 
 	Cliente* cliente =  new Cliente("127.0.0.1", 30100);
 
-	std::cout << "Entre com seu nome: ";
+	std::string cmd;
+	Word pal('1');
 	std::string name;
+	std::cout << "Cadastre-se: ";
+	std::cout << "Entre com seu nome: ";
 	std::cin >> name;
 	std::cout << "Entre com sua senha: ";
 	std::string pass;
 	std::cin >> pass;
-	cliente->login(name, pass);
+	cliente->inserirUser(name, pass);
+	pal = cliente->ouveConexao();
+	cmd = cmdRec(pal);
+	if(cmd == okM)
+		std::cout << "Usuário cadastrado!!!" << "\n";
+	else
+	{
+		std::cout << "Erro incomun!!!" << "\n";
+		exit(EXIT_FAILURE);
+	}
 	
-	std::cout << "Login realizado com sucesso!!!\n" ;
+	while(true)
+	{
+		std::cout << "Entre com seu nome: ";
+		std::cin >> name;
+		std::cout << "Entre com sua senha: ";
+		std::string pass;
+		std::cin >> pass;
+		cliente->login(name, pass);
+		std::cout << "Aguardando servidor!!!";
+		pal = cliente->ouveConexao();
+		cmd = cmdRec(pal);
+		if(cmd == okM)
+		{
+			std::cout << "Login realizado com sucesso!!!\n" ;
+			break;
+		}
+	}
 
 	param *parametros = new param;
 	
@@ -94,7 +109,9 @@ Gtk::Main::run(helloworld);*/
 		std::string msg;
 		std::cout << "Mensagem a ser enviada: ";
 		std::cin >> msg;
+		std::cout << "Aguardando servidor!!!";
 		cliente->userSend(userSend, msg);
+		
 		std::cout << "Deseja ver as mensagens de quem?";
 		std::cin >> name;
 		std::vector< Mensagem > mensagem; 

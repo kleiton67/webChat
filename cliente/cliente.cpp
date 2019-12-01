@@ -129,7 +129,8 @@ bool Cliente::updateG(std::string msg)
 
 Word Cliente::ouveConexao()
 {
-    Word palavra = cmn.receiveWord();
+    Word palavra('1') ;
+    palavra = cmn.receiveWord();
     return palavra;
 }
 

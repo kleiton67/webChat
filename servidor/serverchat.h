@@ -7,6 +7,7 @@
 #include "../word/word.h"
 #include <iostream>
 #include <fstream>
+#include <time.h>
 
 namespace connection{
     
@@ -39,7 +40,7 @@ namespace connection{
             /*
                 Ouve comunicaçãoo com usuario e trata a solicitações
             */
-            void comando();
+            bool comando();
             /*
                 Guarda o logo no arquivo de log do servidor
             */

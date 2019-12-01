@@ -150,7 +150,7 @@ bool ServerChat::search(Word word){
     
 }
 
-void ServerChat::comando()
+bool ServerChat::comando()
 {
     Word palavra('1');
     //Envia respostas para o cliente conectado
@@ -163,17 +163,18 @@ void ServerChat::comando()
     aux.erase(std::remove_if(aux.begin(), aux.end(),
                         &IsUnexpectedCharacters), aux.end());
     std::cout << "Cliente :" << palavra.getRemetente() <<
-            "solicitou " << aux << "\n";
+            " solicitou " << aux << "\n";
+    sleep(1);
     if(aux == loginM)
     {
         
         if(login(palavra))
         {
-            cmn.sentData(" ", palavra.getRemetente(), okM, false, " ");
+            cmn.sentData("server", palavra.getRemetente(), okM, false, " ");
         }
         else
         {
-            cmn.sentData(" ", palavra.getRemetente(), erroM, false, " ");
+            cmn.sentData("server", palavra.getRemetente(), erroM, false, " ");
         }
         
     }
@@ -181,11 +182,11 @@ void ServerChat::comando()
     {
         if(inserirUser(palavra))
         {
-            cmn.sentData(" ", palavra.getRemetente(), okM, false, " ");
+            cmn.sentData("server", palavra.getRemetente(), okM, false, "certo");
         }
         else
         {
-            cmn.sentData(" ", palavra.getRemetente(), erroM, false, " ");
+            cmn.sentData("server", palavra.getRemetente(), erroM, false, "fail");
         }
     }
     if(aux == d_userM)
@@ -235,8 +236,13 @@ void ServerChat::comando()
     }
     if(aux == free)
     {
-        return ;
+        return true;
     }
+    else
+    {
+        return false;
+    }
+    return true;
 }
 
 void ServerChat::log(std::string msg)

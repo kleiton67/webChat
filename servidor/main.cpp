@@ -28,7 +28,8 @@ void *serveCliente(void* param)
     std::cout << "ServeClient: Socket do cliente: " << parametros->socketClient 
     << "\n";
     while(true)
-        connectCliente.comando();
+        if(!connectCliente.comando())
+            break;
     return (void*)NULL;
 }   
 
